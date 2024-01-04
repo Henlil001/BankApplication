@@ -29,7 +29,7 @@ namespace Bank.Data.Repos
             }
         }
 
-        public NewCustomer CreateCustomer(Login login, Accounts accounts)
+        public NewCustomer CreateCustomer(Domain.Entites.Login login, Accounts accounts)
         {
             using(IDbConnection db = _dbContext.GetConnection())
             {

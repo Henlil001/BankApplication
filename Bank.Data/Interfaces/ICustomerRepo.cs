@@ -12,6 +12,6 @@ namespace Bank.Data.Interfaces
     public interface ICustomerRepo
     {
         List<Customer> GetAllCustomers();
-        NewCustomer CreateCustomer(Login login, Accounts accounts);
+        NewCustomer CreateCustomer(Domain.Entites.Login login, Accounts accounts);
     }
 }

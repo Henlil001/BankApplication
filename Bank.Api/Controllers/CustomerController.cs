@@ -1,5 +1,6 @@
 ﻿using Bank.Core.Interfaces;
 using Bank.Domain.Entites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,10 +23,11 @@ namespace Bank.Api.Controllers
             return Ok(_customerService.GetAllCustomers());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult CreateCustomer(Login login, Accounts accounts)
         {
-            
+            return Ok(_customerService.CreateCostumer(login, accounts));
         }
     }
 }

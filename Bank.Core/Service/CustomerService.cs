@@ -19,9 +19,9 @@ namespace Bank.Core.Service
             _customerRepo = customerRepo;
         }
 
-        public NewCustomer CreateCostumer(Login login, Accounts accounts)
+        public NewCustomer CreateCostumer(Domain.Entites.Login login, Accounts accounts)
         {
-            
+            return _customerRepo.CreateCustomer(login, accounts);
         }
 
         public List<Customer> GetAllCustomers()

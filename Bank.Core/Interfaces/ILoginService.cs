@@ -1,4 +1,5 @@
-﻿using Bank.Domain.Entites;
+﻿using Bank.Domain.DTO;
+using Bank.Domain.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace Bank.Core.Interfaces
 {
     public interface ILoginService
     {
-        Login? Login(Login login);
+        LoginToken LoginAdmin(Login login);
+        LoginToken LoginCustomer(Login login);
 
     }
 }
