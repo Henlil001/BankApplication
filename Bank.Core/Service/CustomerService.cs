@@ -1,5 +1,6 @@
 ﻿using Bank.Core.Interfaces;
 using Bank.Data.Interfaces;
+using Bank.Domain.DTO;
 using Bank.Domain.Entites;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,12 @@ namespace Bank.Core.Service
         {
             _customerRepo = customerRepo;
         }
+
+        public NewCustomer CreateCostumer(Login login, Accounts accounts)
+        {
+            
+        }
+
         public List<Customer> GetAllCustomers()
         {
            return _customerRepo.GetAllCustomers();

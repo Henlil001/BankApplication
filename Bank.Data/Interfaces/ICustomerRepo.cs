@@ -1,4 +1,5 @@
-﻿using Bank.Domain.Entites;
+﻿using Bank.Domain.DTO;
+using Bank.Domain.Entites;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace Bank.Data.Interfaces
     public interface ICustomerRepo
     {
         List<Customer> GetAllCustomers();
+        NewCustomer CreateCustomer(Login login, Accounts accounts);
     }
 }
