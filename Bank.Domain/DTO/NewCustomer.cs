@@ -11,5 +11,7 @@ namespace Bank.Domain.DTO
         public int LoginId { get; set; }
         public int CustomerId { get; set; }
         public int accountId { get; set; }
+        public bool CorrectInput { get; set; }
+
     }
 }

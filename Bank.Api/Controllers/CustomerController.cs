@@ -27,7 +27,20 @@ namespace Bank.Api.Controllers
         [HttpPost]
         public IActionResult CreateCustomer(Login login, Accounts accounts)
         {
-            return Ok(_customerService.CreateCostumer(login, accounts));
+            try
+            {
+                var newCustomer = _customerService.CreateCostumer(login, accounts);
+
+                if (newCustomer.CorrectInput is true)
+                    return Ok(newCustomer);
+
+                return BadRequest("Remember to fill in all information / or Invalied Username.");
+            }
+            catch (Exception)
+            {
+                return StatusCode(500,"Error. CreateCustomer");
+                throw;
+            }
         }
     }
 }

@@ -10,5 +10,6 @@ namespace Bank.Data.Interfaces
     public interface ILoginRepo
     {
         Login? GetLogin(Login login);
+        Login? CheckUsername(Login login);
     }
 }

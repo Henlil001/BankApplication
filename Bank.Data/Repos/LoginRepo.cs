@@ -29,5 +29,16 @@ namespace Bank.Data.Repos
                 return db.QuerySingleOrDefault<Login>("CheckLogin", parameters, commandType: CommandType.StoredProcedure);
             }
         }
+        public Login? CheckUsername(Login login)
+        {
+            using (IDbConnection db = _DBContext.GetConnection())
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@UserName", login.UserName);
+
+                return db.QuerySingleOrDefault<Login>("CheckUserName", parameters, commandType: CommandType.StoredProcedure);
+
+    }
+        }
     }
 }
