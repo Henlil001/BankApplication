@@ -13,5 +13,7 @@ namespace Bank.Core.Interfaces
         List<Customer> GetAllCustomers();
 
         NewCustomer CreateCostumer(Login login, Accounts accounts);
+
+
     }
 }

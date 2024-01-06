@@ -1,5 +1,6 @@
 ﻿using Bank.Core.Interfaces;
 using Bank.Domain.Entites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -57,6 +58,25 @@ namespace Bank.Api.Controllers
             catch (Exception)
             {
                 return StatusCode(500, "Error, AdminLogin");
+                throw;
+            }
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult CreateLoginToExictingCustomer(Login login)
+        {
+            try
+            {
+                var newLogin = _Service.CreateLoginToExictingCustomer(login);
+
+                if (newLogin.CorrectInput is false)
+                    return BadRequest("Password need to be atleast 6 char long / or Invalied Username");
+
+                return Ok(newLogin);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Error, CreateLoginToExictingCustomer");
                 throw;
             }
         }

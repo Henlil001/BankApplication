@@ -13,5 +13,7 @@ namespace Bank.Core.Interfaces
         LoginToken LoginAdmin(Login login);
         LoginToken LoginCustomer(Login login);
 
+        NewCustomer CreateLoginToExictingCustomer(Login login);
+
     }
 }

@@ -15,17 +15,20 @@ namespace Bank.Core.Service
 {
     public class LoginService : ILoginService
     {
-        private readonly ILoginRepo _repo;
+        private readonly ILoginRepo _loginRepo;
+        private readonly ICustomerRepo _customerRepo;
 
-        public LoginService(ILoginRepo repo)
+        public LoginService(ILoginRepo repo, ICustomerRepo customerRepo)
         {
-            _repo = repo;
+            _loginRepo = repo;
+            _customerRepo = customerRepo;   
+
         }
         public LoginToken LoginAdmin(Login login)
         {
             var loginToken = new LoginToken();
 
-            var logedInAdmin = _repo.GetLogin(login);
+            var logedInAdmin = _loginRepo.GetLogin(login);
 
             if (logedInAdmin == null || logedInAdmin.Role != "Admin")
                 return loginToken;
@@ -40,7 +43,7 @@ namespace Bank.Core.Service
         {
             var loginToken = new LoginToken();
 
-            var logedInCustomer = _repo.GetLogin(login);
+            var logedInCustomer = _loginRepo.GetLogin(login);
 
             if (logedInCustomer == null || logedInCustomer.Role != "Customer")
                 return loginToken;
@@ -49,6 +52,33 @@ namespace Bank.Core.Service
                 logedInCustomer.Role = char.ToUpper(logedInCustomer.Role[0]) + logedInCustomer.Role.Substring(1).ToLower();
 
             return CreateToken(login);
+        }
+        public NewCustomer CreateLoginToExictingCustomer(Login login)
+        {
+            var newLogin = new NewCustomer();
+            if (login.UserName is null || login.Password.Length < 5 || login.Customer is null)
+                return newLogin;
+
+            var check = _loginRepo.CheckUsername(login);
+
+            if (check != null)
+                return newLogin;
+
+            var checkCustomerInput = _customerRepo.GetAllCustomers().Where(c => c.GivenName == login.Customer.GivenName &&
+                                                                           c.SurName == login.Customer.SurName &&
+                                                                           c.StreetAddress == login.Customer.StreetAddress &&
+                                                                           c.Birthday == login.Customer.Birthday);
+            if (checkCustomerInput is null) 
+                return newLogin;
+
+            login.Password = BCrypt.Net.BCrypt.HashPassword(login.Password);
+            login.Role = "Customer";
+
+            newLogin = _loginRepo.CreateLoginToExictingCustomer(login);
+            newLogin.CorrectInput = true;
+            return newLogin;
+
+
         }
 
         private static LoginToken CreateToken(Login logedInUser)

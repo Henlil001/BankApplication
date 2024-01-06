@@ -19,7 +19,7 @@ namespace Bank.Data.Repos
             _dbContext = dBContext;
         }
 
-        
+
         public List<Customer> GetAllCustomers()
         {
             using (IDbConnection db = _dbContext.GetConnection())
@@ -31,7 +31,7 @@ namespace Bank.Data.Repos
 
         public NewCustomer CreateCustomer(Domain.Entites.Login login, Accounts accounts)
         {
-            using(IDbConnection db = _dbContext.GetConnection())
+            using (IDbConnection db = _dbContext.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@UserName", login.UserName);
@@ -55,12 +55,33 @@ namespace Bank.Data.Repos
                 parameters.Add("@Description", accounts.AccountTypes.Description);
                 parameters.Add("@Role", "Customer");
                 parameters.Add("@Type", "OWNER");
-                
 
-                return db.Query<NewCustomer>("CreateCustomer", parameters, commandType: CommandType.StoredProcedure).Single();
+                // Lägg till utmatningsparametrar
+                parameters.Add("@CustomerId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add("@LoginId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add("@AccountId", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-                
-            }
+                // Exekvera den lagrade proceduren
+                db.Execute("CreateCustomer", parameters, commandType: CommandType.StoredProcedure);
+
+                // Hämta utmatningsvärdena
+                //int customerId = parameters.Get<int>("@CustomerId");
+                //int loginId = parameters.Get<int>("@LoginId");
+                //int accountId = parameters.Get<int>("@AccountId");
+
+                // Skapa och returnera en NewCustomer med de erhållna värdena
+                return new NewCustomer
+                {
+                    CustomerId = parameters.Get<int>("@CustomerId"),
+                    LoginId = parameters.Get<int>("@LoginId"),
+                    AccountId = parameters.Get<int>("@AccountId");
+                // Eventuella andra attribut från NewCustomer-klassen
+            };
+
+            //return db.Query<NewCustomer>("CreateCustomer", parameters, commandType: CommandType.StoredProcedure).Single();
+
+
         }
     }
+}
 }

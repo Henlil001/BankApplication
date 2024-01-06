@@ -21,24 +21,25 @@ namespace Bank.Core.Service
             _loginRepo = loginRepo;
         }
 
+
         public NewCustomer CreateCostumer(Domain.Entites.Login login, Accounts accounts)
         {
             var newCustomer = new NewCustomer();
 
-            if (login.Customer is null||
-                login.Customer.Gender is null||
-                login.Customer.GivenName is null||
-                login.Customer.SurName is null||
-                login.Customer.StreetAddress is null||
-                login.Customer.City is null||
-                login.Customer.ZipCode is null||
-                login.Customer.Country is null||
-                login.Customer.CountryCode is null|| 
-                accounts is null|| 
-                login.Password.Length < 5)
-            {
+            if (login.Customer is null ||
+                login.Customer.Gender is null ||
+                login.Customer.GivenName is null ||
+                login.Customer.SurName is null ||
+                login.Customer.StreetAddress is null ||
+                login.Customer.City is null ||
+                login.Customer.ZipCode is null ||
+                login.Customer.Country is null ||
+                login.Customer.CountryCode is null ||
+                accounts is null ||
+                login.Password.Length < 5 ||
+                login.UserName is null)
                 return newCustomer;
-            }
+
 
             login.Password = BCrypt.Net.BCrypt.HashPassword(login.Password);
 
@@ -57,6 +58,6 @@ namespace Bank.Core.Service
             return _customerRepo.GetAllCustomers();
         }
 
-
+        
     }
 }

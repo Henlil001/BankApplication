@@ -1,4 +1,5 @@
-﻿using Bank.Domain.Entites;
+﻿using Bank.Domain.DTO;
+using Bank.Domain.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Bank.Data.Interfaces
     {
         Login? GetLogin(Login login);
         Login? CheckUsername(Login login);
+        NewCustomer CreateLoginToExictingCustomer(Login login);
     }
 }
