@@ -21,7 +21,7 @@ namespace Bank.Core.Service
         public LoginService(ILoginRepo repo, ICustomerRepo customerRepo)
         {
             _loginRepo = repo;
-            _customerRepo = customerRepo;   
+            _customerRepo = customerRepo;
 
         }
         public LoginToken LoginAdmin(Login login)
@@ -41,12 +41,10 @@ namespace Bank.Core.Service
 
         public LoginToken LoginCustomer(Login login)
         {
-            var loginToken = new LoginToken();
-
             var logedInCustomer = _loginRepo.GetLogin(login);
 
             if (logedInCustomer == null || logedInCustomer.Role != "Customer")
-                return loginToken;
+                return new LoginToken();
 
             if (logedInCustomer != null)
                 logedInCustomer.Role = char.ToUpper(logedInCustomer.Role[0]) + logedInCustomer.Role.Substring(1).ToLower();
@@ -68,7 +66,7 @@ namespace Bank.Core.Service
                                                                            c.SurName == login.Customer.SurName &&
                                                                            c.StreetAddress == login.Customer.StreetAddress &&
                                                                            c.Birthday == login.Customer.Birthday);
-            if (checkCustomerInput is null) 
+            if (checkCustomerInput is null)
                 return newLogin;
 
             login.Password = BCrypt.Net.BCrypt.HashPassword(login.Password);
@@ -77,8 +75,6 @@ namespace Bank.Core.Service
             newLogin = _loginRepo.CreateLoginToExictingCustomer(login);
             newLogin.CorrectInput = true;
             return newLogin;
-
-
         }
 
         private static LoginToken CreateToken(Login logedInUser)
