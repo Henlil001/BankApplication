@@ -27,13 +27,13 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                var token = _Service.LoginCustomer(login);
+                string token = _Service.LoginCustomer(login);
 
-                if (token.Token is null)
+                if (token.IsNullOrEmpty())
                     return BadRequest("Invalied Login / You are not a customer");
 
-                return Ok(token.Token);
-                
+                return Ok(token);
+
             }
             catch (Exception)
             {
@@ -47,13 +47,13 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                var token = _Service.LoginAdmin(login);
+                string token = _Service.LoginAdmin(login);
 
-                if(token.Token is null)
+                if (token.IsNullOrEmpty())
                     return BadRequest("Invalied Login / You are not a Admin");
 
-                return Ok(token.Token);
-                
+                return Ok(token);
+
             }
             catch (Exception)
             {
