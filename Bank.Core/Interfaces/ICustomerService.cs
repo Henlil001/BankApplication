@@ -14,6 +14,8 @@ namespace Bank.Core.Interfaces
 
         NewCustomer CreateCostumer(Login login, Accounts accounts);
 
+        
+
 
     }
 }

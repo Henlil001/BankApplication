@@ -74,14 +74,18 @@ namespace Bank.Data.Repos
                 {
                     CustomerId = parameters.Get<int>("@CustomerId"),
                     LoginId = parameters.Get<int>("@LoginId"),
-                    AccountId = parameters.Get<int>("@AccountId");
+                    AccountId = parameters.Get<int>("@AccountId")
+                };
+
                 // Eventuella andra attribut från NewCustomer-klassen
-            };
+            }
 
             //return db.Query<NewCustomer>("CreateCustomer", parameters, commandType: CommandType.StoredProcedure).Single();
 
 
         }
+
+        
     }
 }
-}
+

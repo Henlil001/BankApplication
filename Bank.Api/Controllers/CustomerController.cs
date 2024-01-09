@@ -3,6 +3,7 @@ using Bank.Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Bank.Api.Controllers
 {
@@ -38,11 +39,22 @@ namespace Bank.Api.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500,"Error. CreateCustomer");
+                return StatusCode(500, "Error. CreateCustomer");
                 throw;
             }
         }
 
-       
+        [HttpGet]
+        [Authorize(Roles = "Customer")]
+        public IActionResult ShowAccounts()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            int id = int.Parse(userIdClaim.Value);
+
+
+        }
+
+
     }
 }

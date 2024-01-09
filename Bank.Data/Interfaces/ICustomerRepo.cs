@@ -13,5 +13,6 @@ namespace Bank.Data.Interfaces
     {
         List<Customer> GetAllCustomers();
         NewCustomer CreateCustomer(Domain.Entites.Login login, Accounts accounts);
+
     }
 }

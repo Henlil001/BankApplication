@@ -53,11 +53,14 @@ namespace Bank.Core.Service
             return newCustomer;
         }
 
+        
+
         public List<Customer> GetAllCustomers()
         {
             return _customerRepo.GetAllCustomers();
         }
 
-        
+
+
     }
 }

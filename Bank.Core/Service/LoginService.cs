@@ -17,12 +17,13 @@ namespace Bank.Core.Service
     {
         private readonly ILoginRepo _loginRepo;
         private readonly ICustomerRepo _customerRepo;
+        private readonly IAccountsRepo _accountsRepo;
 
-        public LoginService(ILoginRepo repo, ICustomerRepo customerRepo)
+        public LoginService(ILoginRepo repo, ICustomerRepo customerRepo, IAccountsRepo accountsRepo)
         {
             _loginRepo = repo;
             _customerRepo = customerRepo;
-
+            _accountsRepo = accountsRepo;
         }
         public string LoginAdmin(Login login)
         {
