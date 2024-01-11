@@ -1,4 +1,7 @@
-﻿using Bank.Core.Interfaces;
+﻿using AutoMapper;
+using Bank.Core.Interfaces;
+using Bank.Data.Interfaces;
+using Bank.Domain.DTO;
 using Bank.Domain.Entites;
 using System;
 using System.Collections.Generic;
@@ -10,15 +13,26 @@ namespace Bank.Core.Service
 {
     public class TransactionsService : ITransactionsService
     {
-        private readonly ITransactionsService _transactionsService;
-        public TransactionsService(ITransactionsService transactions)
+        private readonly ITransactionsRepo _transactionsRepo;
+        private readonly IMapper _mapper;
+        public TransactionsService(ITransactionsRepo transactionsRepo, IMapper mapper)
         {
-            _transactionsService = transactions;
+            _transactionsRepo = transactionsRepo;
+            _mapper = mapper;
         }
-        public List<Transactions> ShowTransactions(int accountId)
+        public List<TransactionsDTO> ShowTransactions(int accountId)
         {
             //har kvar att mappa data till UI
-            return _transactionsService.ShowTransactions(accountId);
+           var transactions = _transactionsRepo.ShowTransactions(accountId);
+
+            var transactionsDTO = new List<TransactionsDTO>();
+
+            foreach (var transaction in transactions)
+            {
+                var mappedTransactions = _mapper.Map<TransactionsDTO>(transaction);
+                transactionsDTO.Add(mappedTransactions);
+            }
+            return transactionsDTO;
         }
 
         public bool TransferMoney(Transactions transactions)

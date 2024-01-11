@@ -35,6 +35,7 @@ namespace Bank.Api.Controllers
                 throw;
             }
         }
+        [Route("api/createnewAccount")]
         [HttpGet]
         [Authorize(Roles = "Customer")]
         public IActionResult CreateNewAccount(Accounts accounts)

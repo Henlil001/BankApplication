@@ -1,4 +1,6 @@
-﻿using Bank.Domain.Entites;
+﻿using Bank.Domain.DTO;
+using Bank.Domain.Entites;
+using Bank.Domain.UIInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;

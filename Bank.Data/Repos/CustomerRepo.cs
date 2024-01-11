@@ -1,6 +1,7 @@
 ﻿using Bank.Data.Interfaces;
 using Bank.Domain.DTO;
 using Bank.Domain.Entites;
+using Bank.Domain.UIInput;
 using Dapper;
 using System;
 using System.Collections.Generic;
@@ -29,30 +30,30 @@ namespace Bank.Data.Repos
             }
         }
 
-        public NewCustomer CreateCustomer(Domain.Entites.Login login, Accounts accounts)
+        public NewCustomerDTO CreateCustomer(CreateNewCustomer customer)
         {
             using (IDbConnection db = _dbContext.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@UserName", login.UserName);
-                parameters.Add("@Password", login.Password);
-                parameters.Add("@Gender", login.Customer.Gender);
-                parameters.Add("@Givename", login.Customer.GivenName);
-                parameters.Add("@Surname", login.Customer.SurName);
-                parameters.Add("@Streetaddress", login.Customer.StreetAddress);
-                parameters.Add("@City", login.Customer.City);
-                parameters.Add("@Zipcode", login.Customer.ZipCode);
-                parameters.Add("@Country", login.Customer.Country);
-                parameters.Add("@CountryCode", login.Customer.CountryCode);
-                parameters.Add("@Birthday", login.Customer.Birthday);
-                parameters.Add("@TelephoneCountryCode", login.Customer.TelephoneCountryCode);
-                parameters.Add("@TelephoneNumber", login.Customer.TelephoneNumber);
-                parameters.Add("@Emailaddress", login.Customer.EmailAddress);
-                parameters.Add("@Frequency", accounts.Frequency);
+                parameters.Add("@UserName", customer.Username);
+                parameters.Add("@Password", customer.Password);
+                parameters.Add("@Gender", customer.Gender);
+                parameters.Add("@Givename", customer.GivenName);
+                parameters.Add("@Surname", customer.SurName);
+                parameters.Add("@Streetaddress", customer.StreetAddress);
+                parameters.Add("@City", customer.City);
+                parameters.Add("@Zipcode", customer.ZipCode);
+                parameters.Add("@Country", customer.Country);
+                parameters.Add("@CountryCode", customer.CountryCode);
+                parameters.Add("@Birthday", customer.Birthday);
+                parameters.Add("@TelephoneCountryCode", customer.TelephoneCountryCode);
+                parameters.Add("@TelephoneNumber", customer.TelephoneNumber);
+                parameters.Add("@Emailaddress", customer.EmailAddress);
+                parameters.Add("@Frequency", customer.Frequency);
                 parameters.Add("@Created", DateTime.Now);
-                parameters.Add("@Balance", accounts.Balance);
-                parameters.Add("@AccountType", accounts.AccountTypes.TypeName);
-                parameters.Add("@Description", accounts.AccountTypes.Description);
+                parameters.Add("@Balance", 0);
+                parameters.Add("@AccountType", customer.AccountTypeName);
+                parameters.Add("@Description", customer.AccountTypeDescription);
                 parameters.Add("@Role", "Customer");
                 parameters.Add("@Type", "OWNER");
 
@@ -70,7 +71,7 @@ namespace Bank.Data.Repos
                 //int accountId = parameters.Get<int>("@AccountId");
 
                 // Skapa och returnera en NewCustomer med de erhållna värdena
-                return new NewCustomer
+                return new NewCustomerDTO
                 {
                     CustomerId = parameters.Get<int>("@CustomerId"),
                     LoginId = parameters.Get<int>("@LoginId"),

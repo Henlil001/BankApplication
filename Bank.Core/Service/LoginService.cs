@@ -49,13 +49,13 @@ namespace Bank.Core.Service
 
             return CreateToken(login);
         }
-        public NewCustomer CreateLoginToExictingCustomer(Login login)
+        public NewCustomerDTO CreateLoginToExictingCustomer(Login login)
         {
-            var newLogin = new NewCustomer();
+            var newLogin = new NewCustomerDTO();
             if (login.UserName is null || login.Password.Length < 5 || login.Customer is null)
                 return newLogin;
 
-            var check = _loginRepo.CheckUsername(login);
+            var check = _loginRepo.CheckUsername(login.UserName);
 
             if (check != null)
                 return newLogin;

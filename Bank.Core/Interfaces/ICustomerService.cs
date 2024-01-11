@@ -1,5 +1,6 @@
 ﻿using Bank.Domain.DTO;
 using Bank.Domain.Entites;
+using Bank.Domain.UIInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Bank.Core.Interfaces
     {
         List<Customer> GetAllCustomers();
 
-        NewCustomer CreateCostumer(Login login, Accounts accounts);
+        NewCustomerDTO CreateCostumer(CreateNewCustomer createNewCustomer);
 
         
 

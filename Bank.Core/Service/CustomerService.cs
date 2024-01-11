@@ -2,6 +2,7 @@
 using Bank.Data.Interfaces;
 using Bank.Domain.DTO;
 using Bank.Domain.Entites;
+using Bank.Domain.UIInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,33 +23,20 @@ namespace Bank.Core.Service
         }
 
 
-        public NewCustomer CreateCostumer(Domain.Entites.Login login, Accounts accounts)
+        public NewCustomerDTO CreateCostumer(CreateNewCustomer createNewCustomer)
         {
-            var newCustomer = new NewCustomer();
+            
+            var newCustomer = new NewCustomerDTO();
+            
+                
+            createNewCustomer.Password = BCrypt.Net.BCrypt.HashPassword(createNewCustomer.Password);
 
-            if (login.Customer is null ||
-                login.Customer.Gender is null ||
-                login.Customer.GivenName is null ||
-                login.Customer.SurName is null ||
-                login.Customer.StreetAddress is null ||
-                login.Customer.City is null ||
-                login.Customer.ZipCode is null ||
-                login.Customer.Country is null ||
-                login.Customer.CountryCode is null ||
-                accounts is null ||
-                login.Password.Length < 5 ||
-                login.UserName is null)
-                return newCustomer;
-
-
-            login.Password = BCrypt.Net.BCrypt.HashPassword(login.Password);
-
-            var check = _loginRepo.CheckUsername(login);
+            var check = _loginRepo.CheckUsername(createNewCustomer.Username);
 
             if (check != null)
                 return newCustomer;
 
-            newCustomer = _customerRepo.CreateCustomer(login, accounts);
+            newCustomer = _customerRepo.CreateCustomer(createNewCustomer);
             newCustomer.CorrectInput = true;
             return newCustomer;
         }
@@ -57,7 +45,7 @@ namespace Bank.Core.Service
 
         public List<Customer> GetAllCustomers()
         {
-            return _customerRepo.GetAllCustomers();
+            return  _customerRepo.GetAllCustomers();
         }
 
 

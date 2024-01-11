@@ -1,4 +1,5 @@
-﻿using Bank.Domain.Entites;
+﻿using Bank.Domain.DTO;
+using Bank.Domain.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Bank.Core.Interfaces
 {
     public interface ITransactionsService
     {
-        List<Transactions> ShowTransactions(int accountId);
+        List<TransactionsDTO> ShowTransactions(int accountId);
         bool TransferMoney(Transactions transactions);
     }
 }

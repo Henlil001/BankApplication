@@ -13,7 +13,7 @@ namespace Bank.Core.Interfaces
         string LoginAdmin(Login login);
         string LoginCustomer(Login login);
 
-        NewCustomer CreateLoginToExictingCustomer(Login login);
+        NewCustomerDTO CreateLoginToExictingCustomer(Login login);
 
     }
 }

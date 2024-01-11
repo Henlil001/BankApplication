@@ -27,10 +27,9 @@ namespace Bank.Data.Repos
                 parameters.Add("@Balance", 0);
                 parameters.Add("@AccountTypeName", accounts.AccountTypes.TypeName);
                 parameters.Add("@Description", accounts.AccountTypes.Description);
-                parameters.Add("@AccountTypeId", accounts.AccountTypes.AccountTypeId);
                 parameters.Add("@CustomerId", customerId);
 
-               return db.QuerySingle<int>("CreateNewAccount", parameters, commandType: CommandType.StoredProcedure);
+                return db.QuerySingle<int>("NewAccount", parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -53,10 +52,10 @@ namespace Bank.Data.Repos
                     commandType: CommandType.StoredProcedure).ToList();
                 return showAccounts;
 
-                
+
             }
         }
 
-       
+
     }
 }

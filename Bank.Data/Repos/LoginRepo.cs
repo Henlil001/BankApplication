@@ -30,18 +30,18 @@ namespace Bank.Data.Repos
                 return db.QuerySingleOrDefault<Login>("CheckLogin", parameters, commandType: CommandType.StoredProcedure);
             }
         }
-        public Login? CheckUsername(Login login)
+        public Login? CheckUsername(string username)
         {
             using (IDbConnection db = _DBContext.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@UserName", login.UserName);
+                parameters.Add("@UserName", username);
 
                 return db.QuerySingleOrDefault<Login>("CheckUserName", parameters, commandType: CommandType.StoredProcedure);
 
             }
         }
-        public NewCustomer CreateLoginToExictingCustomer(Login login)
+        public NewCustomerDTO CreateLoginToExictingCustomer(Login login)
         {
             using (IDbConnection db = _DBContext.GetConnection())
             {
@@ -65,7 +65,7 @@ namespace Bank.Data.Repos
                 //int loginId = parameters.Get<int>("@LoginId");
 
                 // Skapa och returnera en NewCustomer med de erhållna värdena
-                return new NewCustomer
+                return new NewCustomerDTO
                 {
                     CustomerId = parameters.Get<int>("@CustomerId"),
                     LoginId = parameters.Get<int>("@LoginId")

@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bank.Domain.DTO
 {
-    public class NewCustomer
+    public class AccountsDTO
     {
-        public int LoginId { get; set; }
-        public int CustomerId { get; set; }
         public int AccountId { get; set; }
-        public bool CorrectInput { get; set; }
-
+        public string AccountType { get; set; }
+        public decimal Balance { get; set; }
     }
 }

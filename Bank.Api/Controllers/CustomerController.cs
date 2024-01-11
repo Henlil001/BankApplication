@@ -1,5 +1,6 @@
 ﻿using Bank.Core.Interfaces;
 using Bank.Domain.Entites;
+using Bank.Domain.UIInput;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +28,11 @@ namespace Bank.Api.Controllers
         
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateCustomer(Login login, Accounts accounts)
+        public IActionResult CreateCustomer(CreateNewCustomer createNewCustomer)
         {
             try
             {
-                var newCustomer = _customerService.CreateCostumer(login, accounts);
+                var newCustomer = _customerService.CreateCostumer(createNewCustomer);
 
                 if (newCustomer.CorrectInput is true)
                     return Ok(newCustomer);
@@ -45,16 +46,16 @@ namespace Bank.Api.Controllers
             }
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Customer")]
-        public IActionResult ShowAccounts()
-        {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        //[HttpGet]
+        //[Authorize(Roles = "Customer")]
+        //public IActionResult ShowAccounts()
+        //{
+        //    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
-            int id = int.Parse(userIdClaim.Value);
+        //    int id = int.Parse(userIdClaim.Value);
 
-
-        }
+        //    return Ok();
+        //}
 
 
     }

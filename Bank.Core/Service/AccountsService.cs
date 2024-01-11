@@ -1,6 +1,9 @@
-﻿using Bank.Core.Interfaces;
+﻿using AutoMapper;
+using Bank.Core.Interfaces;
 using Bank.Data.Interfaces;
+using Bank.Domain.DTO;
 using Bank.Domain.Entites;
+using Bank.Domain.UIInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +16,24 @@ namespace Bank.Core.Service
     public class AccountsService : IAccountsService
     {
         private readonly IAccountsRepo _accountsRepo;
-        public AccountsService(IAccountsRepo accountsRepo)
+        private readonly IMapper _mapper;
+        public AccountsService(IAccountsRepo accountsRepo, IMapper mapper)
         {
             _accountsRepo = accountsRepo;
+            _mapper = mapper;
         }
-        public List<Accounts> ShowAccounts(int customerId)
+        public List<AccountsDTO> ShowAccounts(int customerId)
         {
-            //har kvar att mappa data till UI
-            return _accountsRepo.ShowAccounts(customerId);
+            var accounts = _accountsRepo.ShowAccounts(customerId);
+
+            var accountsDTO = new List<AccountsDTO>();
+
+            foreach (var account in accounts)
+            {
+                var mapedaAccounts = _mapper.Map<AccountsDTO>(account);
+                accountsDTO.Add(mapedaAccounts);
+            }
+            return accountsDTO;
         }
         public int CreateNewAccount(Accounts accounts, int customerId)
         {
