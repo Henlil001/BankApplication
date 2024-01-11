@@ -19,7 +19,16 @@ namespace Bank.Core.Service
         }
         public List<Accounts> ShowAccounts(int customerId)
         {
+            //har kvar att mappa data till UI
             return _accountsRepo.ShowAccounts(customerId);
         }
+        public int CreateNewAccount(Accounts accounts, int customerId)
+        {
+            if (accounts is null)
+                return 0;
+            return _accountsRepo.CreateNewAccount(accounts, customerId);
+        }
+
+
     }
 }

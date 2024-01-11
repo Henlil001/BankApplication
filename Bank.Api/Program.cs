@@ -4,13 +4,14 @@ using Bank.Data.DataModels;
 using Bank.Data.Interfaces;
 using Bank.Data.Repos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
-
+builder.Configuration.AddJsonFile("appsettings.json");
 
 //I första delen sätts authentication upp för att hanteras med JWT
 builder.Services.AddAuthentication(opt => {
@@ -32,9 +33,12 @@ builder.Services.AddAuthentication(opt => {
     };
 });
 
+
+
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddSingleton<IBankDBContext, BankDBContext>();
+
 
 
 //Automapper behövs sättas upp som en service för att kunna injecterras när man behöver använda det

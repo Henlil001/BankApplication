@@ -24,8 +24,9 @@ namespace Bank.Api.Controllers
             return Ok(_customerService.GetAllCustomers());
         }
 
-        [Authorize(Roles = "Admin")]
+        
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateCustomer(Login login, Accounts accounts)
         {
             try

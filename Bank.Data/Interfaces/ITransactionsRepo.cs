@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bank.Data.Interfaces
 {
-    public interface IAccountsRepo
+    public interface ITransactionsRepo
     {
-        List<Accounts> ShowAccounts(int customerId);
-        int CreateNewAccount(Accounts accounts, int customerId);
-
+        List<Transactions> ShowTransactions(int accountId);
+        void TransferMoney(Transactions transactions);
     }
 }

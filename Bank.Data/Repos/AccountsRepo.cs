@@ -17,9 +17,21 @@ namespace Bank.Data.Repos
         {
             _dbContext = bankDBContext;
         }
-        public void CreateNewAccount(Accounts accounts, int customerId)
+        public int CreateNewAccount(Accounts accounts, int customerId)
         {
-            throw new NotImplementedException();
+            using (IDbConnection db = _dbContext.GetConnection())
+            {
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@Frequensy", accounts.Frequency);
+                parameters.Add("@Date", DateTime.Now);
+                parameters.Add("@Balance", 0);
+                parameters.Add("@AccountTypeName", accounts.AccountTypes.TypeName);
+                parameters.Add("@Description", accounts.AccountTypes.Description);
+                parameters.Add("@AccountTypeId", accounts.AccountTypes.AccountTypeId);
+                parameters.Add("@CustomerId", customerId);
+
+               return db.QuerySingle<int>("CreateNewAccount", parameters, commandType: CommandType.StoredProcedure);
+            }
         }
 
         public List<Accounts> ShowAccounts(int customerId)
@@ -29,8 +41,22 @@ namespace Bank.Data.Repos
                 DynamicParameters Parameters = new DynamicParameters();
                 Parameters.Add("@CustomerID", customerId);
 
-                return db.Query<Accounts>("ShowAccounts",Parameters,commandType:CommandType.StoredProcedure).ToList();
+                //return db.Query<Accounts>("ShowAccounts",Parameters,commandType:CommandType.StoredProcedure).ToList();
+
+                var showAccounts = db.Query<Accounts, AccountTypes, Accounts>("ShowAccounts",
+                    (accounts, accountTypes) =>
+                    {
+                        accounts.AccountTypes = accountTypes;
+                        return accounts;
+                    }, param: Parameters,
+                    splitOn: "TypeName",
+                    commandType: CommandType.StoredProcedure).ToList();
+                return showAccounts;
+
+                
             }
         }
+
+       
     }
 }

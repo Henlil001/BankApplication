@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bank.Core.Interfaces
 {
-    public interface IAccountsService
+    public interface ITransactionsService
     {
-        List<Accounts> ShowAccounts(int customerId);
-        int CreateNewAccount(Accounts accounts, int customerId);
+        List<Transactions> ShowTransactions(int accountId);
+        bool TransferMoney(Transactions transactions);
     }
 }
