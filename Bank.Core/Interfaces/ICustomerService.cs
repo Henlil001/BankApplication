@@ -13,7 +13,7 @@ namespace Bank.Core.Interfaces
     {
         List<Customer> GetAllCustomers();
 
-        NewCustomerDTO CreateCostumer(CreateNewCustomer createNewCustomer);
+        NewCustomerDTO CreateCostumer(CreateNewCustomerInput createNewCustomer);
 
         
 

@@ -1,4 +1,5 @@
 ﻿using Bank.Domain.Entites;
+using Bank.Domain.UIInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace Bank.Data.Interfaces
     public interface ITransactionsRepo
     {
         List<Transactions> ShowTransactions(int accountId);
-        void TransferMoney(Transactions transactions);
+        void TransferMoney(TransactionsInput transactions);
     }
 }

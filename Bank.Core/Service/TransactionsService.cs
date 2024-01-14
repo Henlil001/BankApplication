@@ -3,6 +3,7 @@ using Bank.Core.Interfaces;
 using Bank.Data.Interfaces;
 using Bank.Domain.DTO;
 using Bank.Domain.Entites;
+using Bank.Domain.UIInput;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Bank.Core.Service
         public List<TransactionsDTO> ShowTransactions(int accountId)
         {
             //har kvar att mappa data till UI
-           var transactions = _transactionsRepo.ShowTransactions(accountId);
+            var transactions = _transactionsRepo.ShowTransactions(accountId);
 
             var transactionsDTO = new List<TransactionsDTO>();
 
@@ -35,9 +36,17 @@ namespace Bank.Core.Service
             return transactionsDTO;
         }
 
-        public bool TransferMoney(Transactions transactions)
+        public bool TransferMoney(TransactionsInput transactions)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _transactionsRepo.TransferMoney(transactions);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

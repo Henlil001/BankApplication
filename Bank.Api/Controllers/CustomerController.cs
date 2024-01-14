@@ -28,7 +28,7 @@ namespace Bank.Api.Controllers
         
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateCustomer(CreateNewCustomer createNewCustomer)
+        public IActionResult CreateCustomer(CreateNewCustomerInput createNewCustomer)
         {
             try
             {
@@ -45,17 +45,6 @@ namespace Bank.Api.Controllers
                 throw;
             }
         }
-
-        //[HttpGet]
-        //[Authorize(Roles = "Customer")]
-        //public IActionResult ShowAccounts()
-        //{
-        //    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-        //    int id = int.Parse(userIdClaim.Value);
-
-        //    return Ok();
-        //}
 
 
     }

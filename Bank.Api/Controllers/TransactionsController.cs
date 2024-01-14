@@ -1,7 +1,9 @@
 ﻿using Bank.Core.Interfaces;
+using Bank.Domain.UIInput;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Transactions;
 
 namespace Bank.Api.Controllers
 {
@@ -17,11 +19,10 @@ namespace Bank.Api.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Customer")]
-        public IActionResult ShowTransactions(int accountId) 
+        public IActionResult ShowTransactions(int accountId)
         {
             try
             {
-                //har kvar att mappa data till UI
                 return Ok(_transactionsService.ShowTransactions(accountId));
             }
             catch (Exception)
@@ -29,7 +30,14 @@ namespace Bank.Api.Controllers
                 return StatusCode(500, "Error, ShowTransactions");
                 throw;
             }
-        
+        }
+
+        [HttpPost]
+        public IActionResult TransferMoney(TransactionsInput transaction)
+        {
+           bool check = _transactionsService.TransferMoney(transaction);
+            if (check) return Ok("Transfer successfull.");
+            else return StatusCode(500, "Transfer Failed");
         }
     }
 }

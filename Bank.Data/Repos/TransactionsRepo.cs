@@ -1,5 +1,6 @@
 ﻿using Bank.Data.Interfaces;
 using Bank.Domain.Entites;
+using Bank.Domain.UIInput;
 using Dapper;
 using System;
 using System.Collections.Generic;
@@ -38,9 +39,24 @@ namespace Bank.Data.Repos
             }
         }
 
-        public void TransferMoney(Transactions transactions)
+        public void TransferMoney(TransactionsInput transactions)
         {
-            throw new NotImplementedException();
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@AccountToTransferTo", transactions.AccountToTransferTo);
+            parameters.Add("@AccountToTransferFrom", transactions.AccountToTransferFrom);
+            parameters.Add("@Date", DateTime.Now);
+            parameters.Add("@Type", transactions.Type);
+            parameters.Add("@Amount", transactions.Amount);
+            parameters.Add("@Balance", transactions.Balance); //Kolla om denna ska vara me sen när jag gör stored procedure
+            parameters.Add("@Symbol", transactions.Symbol);
+            parameters.Add("@Bank", transactions.Bank);
+            parameters.Add("@Account", transactions.Account);
+
+            using (IDbConnection db = _dbContext.GetConnection())
+            {
+                db.Execute("TransferMoney", parameters, commandType: CommandType.StoredProcedure);
+            }
+
         }
     }
 }

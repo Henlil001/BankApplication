@@ -30,7 +30,7 @@ namespace Bank.Data.Repos
             }
         }
 
-        public NewCustomerDTO CreateCustomer(CreateNewCustomer customer)
+        public NewCustomerDTO CreateCustomer(CreateNewCustomerInput customer)
         {
             using (IDbConnection db = _dbContext.GetConnection())
             {

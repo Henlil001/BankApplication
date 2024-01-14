@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bank.Domain.UIInput
 {
-    public class CreateNewCustomer
+    public class CreateNewCustomerInput
     {
         public string Username { get; set; }
         public string Password { get; set; }

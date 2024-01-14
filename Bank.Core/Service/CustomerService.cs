@@ -23,7 +23,7 @@ namespace Bank.Core.Service
         }
 
 
-        public NewCustomerDTO CreateCostumer(CreateNewCustomer createNewCustomer)
+        public NewCustomerDTO CreateCostumer(CreateNewCustomerInput createNewCustomer)
         {
             
             var newCustomer = new NewCustomerDTO();
