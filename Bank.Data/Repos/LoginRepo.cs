@@ -19,17 +19,23 @@ namespace Bank.Data.Repos
         {
             _DBContext = dBContext;
         }
-        public Login? GetLogin(Login login)
+        public Login? GetLogin(string username, string password)
         {
             using (IDbConnection db = _DBContext.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@UserName", login.UserName);
-                parameters.Add("@Password", login.Password);
+                parameters.Add("@UserName", username);
+                parameters.Add("@Password", password);
 
-                return db.QuerySingleOrDefault<Login>("CheckLogin", parameters, commandType: CommandType.StoredProcedure);
+                var login = db.Query<Login, Customer, Login>("CheckLogin", (login, customer) =>
+                {
+                    login.Customer = customer;
+                    return login;
+                }, param: parameters, splitOn: "CustomerId", commandType: CommandType.StoredProcedure).SingleOrDefault();
+                return login;
             }
         }
+        
         public Login? CheckUsername(string username)
         {
             using (IDbConnection db = _DBContext.GetConnection())
@@ -37,7 +43,13 @@ namespace Bank.Data.Repos
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@UserName", username);
 
-                return db.QuerySingleOrDefault<Login>("CheckUserName", parameters, commandType: CommandType.StoredProcedure);
+                var login = db.Query<Login, Customer, Login>("CheckUserName",
+                    (login, customer) =>
+                    {
+                        login.Customer = customer;
+                        return login;
+                    }, param: parameters, splitOn: "CustomerId", commandType: CommandType.StoredProcedure).SingleOrDefault();
+                return login;
 
             }
         }
@@ -69,7 +81,7 @@ namespace Bank.Data.Repos
                 {
                     CustomerId = parameters.Get<int>("@CustomerId"),
                     LoginId = parameters.Get<int>("@LoginId")
-                    
+
                 };
 
                 // return db.QuerySingle<NewCustomer>("CreateLoginToExictingCustomer", parameters, commandType: CommandType.StoredProcedure);

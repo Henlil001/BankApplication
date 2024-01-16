@@ -55,6 +55,22 @@ namespace Bank.Data.Repos
 
             }
         }
+        public Accounts? GetAccount(int accountId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@AccountId", accountId);
+
+            using (IDbConnection db = _dbContext.GetConnection())
+            {
+                var account = db.Query<Accounts, AccountTypes, Accounts>("GetAccount",
+                    (accounts, accountType) =>
+                {
+                    accounts.AccountTypes = accountType;
+                    return accounts;
+                }, param: parameters, splitOn: "", commandType: CommandType.StoredProcedure).SingleOrDefault();
+                return account;
+            }
+        }
 
 
     }

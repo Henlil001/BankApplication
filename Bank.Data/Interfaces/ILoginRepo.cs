@@ -10,7 +10,7 @@ namespace Bank.Data.Interfaces
 {
     public interface ILoginRepo
     {
-        Login? GetLogin(Login login);
+        Login? GetLogin(string username, string password);
         Login? CheckUsername(string username);
         NewCustomerDTO CreateLoginToExictingCustomer(Login login);
     }

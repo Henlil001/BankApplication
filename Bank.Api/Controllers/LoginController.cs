@@ -23,16 +23,16 @@ namespace Bank.Api.Controllers
 
         [Route("Customer/Login")]
         [HttpPost]
-        public IActionResult CustomerLogin(Login login)
+        public IActionResult CustomerLogin(string username, string password)
         {
             try
             {
-                string token = _Service.LoginCustomer(login);
+                string token = _Service.LoginCustomer(username, password);
 
                 if (token.IsNullOrEmpty())
                     return BadRequest("Invalied Login / You are not a customer");
 
-                return Ok(token);
+                return Ok(new { Token = token });
 
             }
             catch (Exception)
@@ -43,16 +43,16 @@ namespace Bank.Api.Controllers
         }
         [Route("Admin/Login")]
         [HttpPost]
-        public IActionResult AdminLogin(Login login)
+        public IActionResult AdminLogin(string username, string password)
         {
             try
             {
-                string token = _Service.LoginAdmin(login);
+                string token = _Service.LoginAdmin(username, password);
 
                 if (token.IsNullOrEmpty())
                     return BadRequest("Invalied Login / You are not a Admin");
 
-                return Ok(token);
+                return Ok(new { Token = token });
 
             }
             catch (Exception)
@@ -61,6 +61,7 @@ namespace Bank.Api.Controllers
                 throw;
             }
         }
+        [Route("loginToExisting/Customer")]
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult CreateLoginToExictingCustomer(Login login)

@@ -39,6 +39,7 @@ namespace Bank.Core.Service
         {
             if (accounts is null)
                 return 0;
+
             return _accountsRepo.CreateNewAccount(accounts, customerId);
         }
 

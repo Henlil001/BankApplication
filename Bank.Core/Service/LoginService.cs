@@ -25,29 +25,24 @@ namespace Bank.Core.Service
             _customerRepo = customerRepo;
             _accountsRepo = accountsRepo;
         }
-        public string LoginAdmin(Login login)
+        public string LoginAdmin(string username, string password)
         {
-            var logedInAdmin = _loginRepo.GetLogin(login);
+            var checkUsername = _loginRepo.CheckUsername(username);
 
-            if (logedInAdmin is null || logedInAdmin.Role != "Admin")
+            if (checkUsername is null || checkUsername.Role != "Admin" || BCrypt.Net.BCrypt.Verify(password, checkUsername.Password) == false)
                 return string.Empty;
 
-            login.Role = logedInAdmin.Role;
-
-            return CreateToken(login);
+            return CreateToken(checkUsername);
         }
 
-        public string LoginCustomer(Login login)
+        public string LoginCustomer(string username, string password)
         {
-            var logedInCustomer = _loginRepo.GetLogin(login);
+            var checkUsername = _loginRepo.CheckUsername(username);
 
-            if (logedInCustomer is null || logedInCustomer.Role != "Customer")
+            if (checkUsername is null || checkUsername.Role != "Customer" || BCrypt.Net.BCrypt.Verify(password, checkUsername.Password) == false)
                 return string.Empty;
 
-            login.Role = char.ToUpper(logedInCustomer.Role[0]) + logedInCustomer.Role.Substring(1).ToLower();
-            login.Customer.CustomerId = logedInCustomer.Customer.CustomerId;
-
-            return CreateToken(login);
+            return CreateToken(checkUsername);
         }
         public NewCustomerDTO CreateLoginToExictingCustomer(Login login)
         {
@@ -81,6 +76,7 @@ namespace Bank.Core.Service
 
             if (logedInUser.Customer is null)  //Detta sker om det är admin som loggar in
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, logedInUser.LoginID.ToString()));
+
             else
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, logedInUser.Customer.CustomerId.ToString()));
 
@@ -102,7 +98,7 @@ namespace Bank.Core.Service
                     signingCredentials: signinCredentials);
 
             //Generar en ny token som skall skickas tillbaka 
-            string token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
             return token;
         }

@@ -51,6 +51,7 @@ namespace Bank.Data.Repos
             parameters.Add("@Symbol", transactions.Symbol);
             parameters.Add("@Bank", transactions.Bank);
             parameters.Add("@Account", transactions.Account);
+            parameters.Add("@Operation", transactions.Operation);
 
             using (IDbConnection db = _dbContext.GetConnection())
             {

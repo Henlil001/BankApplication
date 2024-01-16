@@ -12,9 +12,12 @@ namespace Bank.Core.Service
     public class LoansService : ILoansService
     {
         private readonly ILoansRepo _loansRepo;
-        public LoansService(ILoansRepo loansRepo)
+        private readonly IAccountsRepo _accountsRepo;
+        public LoansService(ILoansRepo loansRepo, IAccountsRepo accountsRepo)
         {
             _loansRepo = loansRepo;
+            _accountsRepo = accountsRepo;
+
         }
 
         public int NewLoan(Loans loans)
@@ -25,6 +28,9 @@ namespace Bank.Core.Service
                 loans.Payments.ToString() is null||
                 loans.Status is null)
                 return 0;
+
+            var account = _accountsRepo.GetAccount(loans.Accounts.AccountId);
+            if (account == null) return 0;
 
             int loanId = _loansRepo.NewLoan(loans);
             return loanId;

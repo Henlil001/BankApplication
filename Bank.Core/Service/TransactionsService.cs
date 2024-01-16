@@ -15,15 +15,17 @@ namespace Bank.Core.Service
     public class TransactionsService : ITransactionsService
     {
         private readonly ITransactionsRepo _transactionsRepo;
+        private readonly IAccountsRepo _accountsRepo;
         private readonly IMapper _mapper;
-        public TransactionsService(ITransactionsRepo transactionsRepo, IMapper mapper)
+        public TransactionsService(ITransactionsRepo transactionsRepo, IMapper mapper, IAccountsRepo accountsRepo)
         {
             _transactionsRepo = transactionsRepo;
             _mapper = mapper;
+            _accountsRepo = accountsRepo;
         }
         public List<TransactionsDTO> ShowTransactions(int accountId)
         {
-            //har kvar att mappa data till UI
+
             var transactions = _transactionsRepo.ShowTransactions(accountId);
 
             var transactionsDTO = new List<TransactionsDTO>();
@@ -40,7 +42,19 @@ namespace Bank.Core.Service
         {
             try
             {
-                _transactionsRepo.TransferMoney(transactions);
+                if (transactions.AccountToTransferFrom.ToString() is null ||
+                    transactions.AccountToTransferTo.ToString() is null ||
+                    transactions.Type is null ||
+                    transactions.Operation is null ||
+                    transactions.Amount.ToString() is null ||
+                    transactions.Balance.ToString() is null)  //Kolla om denna ska vara en inparameter sen när jag gör stored procedure.
+                    return false;
+
+                var account = _accountsRepo.GetAccount(transactions.AccountToTransferFrom);
+
+                if (account == null || account.Balance < transactions.Amount) return false;
+
+                _transactionsRepo.TransferMoney(transactions);  //Har inte gjort klart stored procedure.
                 return true;
             }
             catch (Exception)

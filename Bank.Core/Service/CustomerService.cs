@@ -25,27 +25,37 @@ namespace Bank.Core.Service
 
         public NewCustomerDTO CreateCostumer(CreateNewCustomerInput createNewCustomer)
         {
-            
+
             var newCustomer = new NewCustomerDTO();
-            
-                
-            createNewCustomer.Password = BCrypt.Net.BCrypt.HashPassword(createNewCustomer.Password);
 
             var check = _loginRepo.CheckUsername(createNewCustomer.Username);
 
-            if (check != null)
+            if (check != null ||
+                createNewCustomer.Username is null || createNewCustomer.Password is null ||
+                createNewCustomer.Password.Length < 5 ||
+                createNewCustomer.Gender is null || createNewCustomer.GivenName is null ||
+                createNewCustomer.SurName is null || createNewCustomer.StreetAddress is null ||
+                createNewCustomer.City is null || createNewCustomer.ZipCode is null ||
+                createNewCustomer.Country is null || createNewCustomer.CountryCode is null ||
+                createNewCustomer.Birthday is null || createNewCustomer.Frequency is null ||
+                createNewCustomer.AccountTypeName is null || createNewCustomer.AccountTypeDescription is null)
                 return newCustomer;
+
+            createNewCustomer.Password = BCrypt.Net.BCrypt.HashPassword(createNewCustomer.Password);
 
             newCustomer = _customerRepo.CreateCustomer(createNewCustomer);
             newCustomer.CorrectInput = true;
             return newCustomer;
         }
 
-        
+
 
         public List<Customer> GetAllCustomers()
         {
-            return  _customerRepo.GetAllCustomers();
+            string password = BCrypt.Net.BCrypt.HashPassword("henrik123");
+
+
+            return _customerRepo.GetAllCustomers();
         }
 
 

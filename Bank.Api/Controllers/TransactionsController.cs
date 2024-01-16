@@ -31,8 +31,9 @@ namespace Bank.Api.Controllers
                 throw;
             }
         }
-
+        
         [HttpPost]
+        [Authorize(Roles = "Customer")]
         public IActionResult TransferMoney(TransactionsInput transaction)
         {
            bool check = _transactionsService.TransferMoney(transaction);

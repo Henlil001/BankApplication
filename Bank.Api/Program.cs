@@ -64,13 +64,13 @@ builder.Services.AddAuthentication(opt =>
     new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mysecretKey12345!#kjbgfoilkjgtiyduglih7gtl8gt5"))     //Här sätts krypteringen upp med en nyckel som egentligen inte skall ligga direkt här ("mysecretKey12345!#")
     };
 });
-
+//Automapper behövs sättas upp som en service för att kunna injecterras när man behöver använda det
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddScoped<ILoansService, LoansService>();
 builder.Services.AddScoped<ILoansRepo, LoansRepo>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
-builder.Services.AddSingleton<IBankDBContext, BankDBContext>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<ILoginRepo, LoginRepo>();
 builder.Services.AddScoped<IAccountsService, AccountsService>();
@@ -78,10 +78,8 @@ builder.Services.AddScoped<IAccountsRepo, AccountsRepo>();
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
 builder.Services.AddScoped<ITransactionsRepo, TransactionsRepo>();
 
+builder.Services.AddSingleton<IBankDBContext, BankDBContext>();
 
-
-//Automapper behövs sättas upp som en service för att kunna injecterras när man behöver använda det
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 

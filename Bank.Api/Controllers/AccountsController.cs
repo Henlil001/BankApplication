@@ -1,6 +1,7 @@
 ﻿using Bank.Core.Interfaces;
 using Bank.Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -23,7 +24,6 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                //har kvar att mappa data till UI
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 int customerId = int.Parse(userIdClaim.Value);
 
@@ -35,8 +35,7 @@ namespace Bank.Api.Controllers
                 throw;
             }
         }
-        [Route("/create/account")]
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Customer")]
         public IActionResult CreateNewAccount(Accounts accounts)
         {
@@ -51,7 +50,7 @@ namespace Bank.Api.Controllers
                     return BadRequest("Invalied Data");
 
                 return Ok(id);
-                
+
             }
             catch (Exception)
             {
@@ -59,7 +58,7 @@ namespace Bank.Api.Controllers
                 throw;
             }
 
-            
+
         }
     }
 }

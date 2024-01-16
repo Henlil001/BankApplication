@@ -13,6 +13,7 @@ namespace Bank.Data.Interfaces
     {
         List<Accounts> ShowAccounts(int customerId);
         int CreateNewAccount(Accounts accounts, int customerId);
+        Accounts? GetAccount(int AccountId);
 
     }
 }
