@@ -1,4 +1,5 @@
 ﻿using Bank.Core.Interfaces;
+using Bank.Domain.DTO;
 using Bank.Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
@@ -17,7 +18,7 @@ namespace Bank.Api.Controllers
         {
             _accountsService = accountsService;
         }
-
+        [Route("Show_Inloged_Customer_Accounts")]
         [HttpGet]
         [Authorize(Roles = "Customer")]
         public IActionResult ShowAccounts()
@@ -35,19 +36,20 @@ namespace Bank.Api.Controllers
                 throw;
             }
         }
+        [Route("Create_New_Account_For_Inloged_Customer")]
         [HttpPost]
         [Authorize(Roles = "Customer")]
-        public IActionResult CreateNewAccount(Accounts accounts)
+        public IActionResult CreateNewAccount(CreateAccountDTO account)
         {
             try
             {
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 int customerId = int.Parse(userIdClaim.Value);
 
-                int id = _accountsService.CreateNewAccount(accounts, customerId);
+                int id = _accountsService.CreateNewAccount(account, customerId);
 
                 if (id == 0)
-                    return BadRequest("Invalied Data");
+                    return BadRequest("remember to fill in Frequensy and AccountType 1 or 2. ");
 
                 return Ok(id);
 

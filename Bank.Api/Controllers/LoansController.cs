@@ -16,7 +16,7 @@ namespace Bank.Api.Controllers
         {
             _loansService = loansService;
         }
-
+        [Route("Admin_Create_Loan")]
         [HttpPost]
         public IActionResult NewLoan(Loans loan)
         {

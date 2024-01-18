@@ -24,7 +24,7 @@ namespace Bank.Domain.UIInput
         public string? TelephoneNumber { get; set; }
         public string? EmailAddress { get; set; }
         public string Frequency { get; set; }
-        public string AccountTypeName { get; set; }
-        public string AccountTypeDescription { get; set; }
+        public string TypeOWNERorDISPONENT { get; set; }
+
     }
 }

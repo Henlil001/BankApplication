@@ -25,24 +25,43 @@ namespace Bank.Core.Service
             _customerRepo = customerRepo;
             _accountsRepo = accountsRepo;
         }
-        public string LoginAdmin(string username, string password)
+        public string Login(string username, string password)
         {
             var checkUsername = _loginRepo.CheckUsername(username);
 
-            if (checkUsername is null || checkUsername.Role != "Admin" || BCrypt.Net.BCrypt.Verify(password, checkUsername.Password) == false)
+            if (checkUsername is null || BCrypt.Net.BCrypt.Verify(password, checkUsername.Password) == false)
                 return string.Empty;
 
-            return CreateToken(checkUsername);
-        }
+            List<Claim> claims = new List<Claim>();
 
-        public string LoginCustomer(string username, string password)
-        {
-            var checkUsername = _loginRepo.CheckUsername(username);
+            if (checkUsername.Customer is null)  //Detta sker om det är admin som loggar in
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, checkUsername.LoginID.ToString()));
 
-            if (checkUsername is null || checkUsername.Role != "Customer" || BCrypt.Net.BCrypt.Verify(password, checkUsername.Password) == false)
-                return string.Empty;
+            else
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, checkUsername.Customer.CustomerId.ToString()));
 
-            return CreateToken(checkUsername);
+            claims.Add(new Claim(ClaimTypes.Role, checkUsername.Role));
+
+            //Sätta upp kryptering. Samma säkerhetsnyckel som när vi satte upp tjänsten
+            //Denna förvaras på ett säkert ställe tex Azure Keyvault eller liknande och hårdkodas
+            //inte in på detta sätt
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mysecretKey12345!#kjbgfoilkjgtiyduglih7gtl8gt5"));
+
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+            //Skapa options för att sätta upp en token
+            var tokenOptions = new JwtSecurityToken(
+                    issuer: "http://localhost:5142",
+                    audience: "http://localhost:5142",
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(30),
+                    signingCredentials: signinCredentials);
+
+            //Generar en ny token som skall skickas tillbaka 
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+            return token;
+
         }
         public NewCustomerDTO CreateLoginToExictingCustomer(Login login)
         {
@@ -69,40 +88,6 @@ namespace Bank.Core.Service
             newLogin.CorrectInput = true;
             return newLogin;
         }
-
-        private static string CreateToken(Login logedInUser)
-        {
-            List<Claim> claims = new List<Claim>();
-
-            if (logedInUser.Customer is null)  //Detta sker om det är admin som loggar in
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, logedInUser.LoginID.ToString()));
-
-            else
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, logedInUser.Customer.CustomerId.ToString()));
-
-            claims.Add(new Claim(ClaimTypes.Role, logedInUser.Role));
-
-            //Sätta upp kryptering. Samma säkerhetsnyckel som när vi satte upp tjänsten
-            //Denna förvaras på ett säkert ställe tex Azure Keyvault eller liknande och hårdkodas
-            //inte in på detta sätt
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mysecretKey12345!#kjbgfoilkjgtiyduglih7gtl8gt5"));
-
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-            //Skapa options för att sätta upp en token
-            var tokenOptions = new JwtSecurityToken(
-                    issuer: "http://localhost:5142",
-                    audience: "http://localhost:5142",
-                    claims: claims,
-                    expires: DateTime.Now.AddMinutes(30),
-                    signingCredentials: signinCredentials);
-
-            //Generar en ny token som skall skickas tillbaka 
-            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-
-            return token;
-        }
-
 
     }
 }

@@ -16,7 +16,7 @@ namespace Bank.Api.Controllers
         {
             _transactionsService = transactions;
         }
-
+        [Route("Show_Transactions_For_A_CustomerAccount")]
         [HttpGet]
         [Authorize(Roles = "Customer")]
         public IActionResult ShowTransactions(int accountId)
@@ -31,7 +31,7 @@ namespace Bank.Api.Controllers
                 throw;
             }
         }
-        
+        [Route("Transfer_Money")]
         [HttpPost]
         [Authorize(Roles = "Customer")]
         public IActionResult TransferMoney(TransactionsInput transaction)

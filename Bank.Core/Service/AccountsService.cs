@@ -35,12 +35,12 @@ namespace Bank.Core.Service
             }
             return accountsDTO;
         }
-        public int CreateNewAccount(Accounts accounts, int customerId)
+        public int CreateNewAccount(CreateAccountDTO account, int customerId)
         {
-            if (accounts is null)
+            if (account.Frequency is null && !(account.AccountType1ForStandardPrivat2ForSavings==1 || account.AccountType1ForStandardPrivat2ForSavings == 2))
                 return 0;
-
-            return _accountsRepo.CreateNewAccount(accounts, customerId);
+            
+            return _accountsRepo.CreateNewAccount(account, customerId);
         }
 
 

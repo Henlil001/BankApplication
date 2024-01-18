@@ -25,7 +25,7 @@ namespace Bank.Api.Controllers
             return Ok(_customerService.GetAllCustomers());
         }
 
-        
+        [Route("Admin_Create_New_Customer")]
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult CreateCustomer(CreateNewCustomerInput createNewCustomer)

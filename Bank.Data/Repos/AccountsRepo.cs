@@ -1,4 +1,5 @@
 ﻿using Bank.Data.Interfaces;
+using Bank.Domain.DTO;
 using Bank.Domain.Entites;
 using Dapper;
 using System;
@@ -17,16 +18,15 @@ namespace Bank.Data.Repos
         {
             _dbContext = bankDBContext;
         }
-        public int CreateNewAccount(Accounts accounts, int customerId)
+        public int CreateNewAccount(CreateAccountDTO accounts, int customerId)
         {
             using (IDbConnection db = _dbContext.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@Frequensy", accounts.Frequency);
-                parameters.Add("@Date", DateTime.Now);
-                parameters.Add("@Balance", 0);
-                parameters.Add("@AccountTypeName", accounts.AccountTypes.TypeName);
-                parameters.Add("@Description", accounts.AccountTypes.Description);
+                parameters.Add("@Created", DateTime.Now);
+                parameters.Add("@Balance", 0,00);
+                parameters.Add("@AccountType", accounts.AccountType1ForStandardPrivat2ForSavings);
                 parameters.Add("@CustomerId", customerId);
 
                 return db.QuerySingle<int>("NewAccount", parameters, commandType: CommandType.StoredProcedure);

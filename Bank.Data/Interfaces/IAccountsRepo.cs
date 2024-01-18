@@ -12,7 +12,7 @@ namespace Bank.Data.Interfaces
     public interface IAccountsRepo
     {
         List<Accounts> ShowAccounts(int customerId);
-        int CreateNewAccount(Accounts accounts, int customerId);
+        int CreateNewAccount(CreateAccountDTO account, int customerId);
         Accounts? GetAccount(int AccountId);
 
     }

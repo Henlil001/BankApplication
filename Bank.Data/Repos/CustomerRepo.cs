@@ -6,6 +6,7 @@ using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,8 +38,9 @@ namespace Bank.Data.Repos
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@UserName", customer.Username);
                 parameters.Add("@Password", customer.Password);
+                parameters.Add("@Role", "Customer");
                 parameters.Add("@Gender", customer.Gender);
-                parameters.Add("@Givename", customer.GivenName);
+                parameters.Add("@GivenName", customer.GivenName);
                 parameters.Add("@Surname", customer.SurName);
                 parameters.Add("@Streetaddress", customer.StreetAddress);
                 parameters.Add("@City", customer.City);
@@ -51,11 +53,9 @@ namespace Bank.Data.Repos
                 parameters.Add("@Emailaddress", customer.EmailAddress);
                 parameters.Add("@Frequency", customer.Frequency);
                 parameters.Add("@Created", DateTime.Now);
-                parameters.Add("@Balance", 0);
-                parameters.Add("@AccountType", customer.AccountTypeName);
-                parameters.Add("@Description", customer.AccountTypeDescription);
-                parameters.Add("@Role", "Customer");
-                parameters.Add("@Type", "OWNER");
+                parameters.Add("@Balance", 0, 00);
+                parameters.Add("@AccountType", 2);
+                parameters.Add("@Type", customer.TypeOWNERorDISPONENT);
 
                 // Lägg till utmatningsparametrar
                 parameters.Add("@CustomerId", dbType: DbType.Int32, direction: ParameterDirection.Output);
@@ -65,10 +65,6 @@ namespace Bank.Data.Repos
                 // Exekvera den lagrade proceduren
                 db.Execute("CreateCustomer", parameters, commandType: CommandType.StoredProcedure);
 
-                // Hämta utmatningsvärdena
-                //int customerId = parameters.Get<int>("@CustomerId");
-                //int loginId = parameters.Get<int>("@LoginId");
-                //int accountId = parameters.Get<int>("@AccountId");
 
                 // Skapa och returnera en NewCustomer med de erhållna värdena
                 return new NewCustomerDTO
@@ -78,15 +74,12 @@ namespace Bank.Data.Repos
                     AccountId = parameters.Get<int>("@AccountId")
                 };
 
-                // Eventuella andra attribut från NewCustomer-klassen
             }
-
-            //return db.Query<NewCustomer>("CreateCustomer", parameters, commandType: CommandType.StoredProcedure).Single();
 
 
         }
 
-        
+
     }
 }
 

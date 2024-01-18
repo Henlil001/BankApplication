@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Bank.Core.Interfaces;
 using Bank.Data.Interfaces;
 using Bank.Domain.DTO;
@@ -46,19 +47,19 @@ namespace Bank.Core.Service
                     transactions.AccountToTransferTo.ToString() is null ||
                     transactions.Type is null ||
                     transactions.Operation is null ||
-                    transactions.Amount.ToString() is null ||
-                    transactions.Balance.ToString() is null)  //Kolla om denna ska vara en inparameter sen när jag gör stored procedure.
+                    transactions.Amount.ToString() is null)
                     return false;
 
                 var account = _accountsRepo.GetAccount(transactions.AccountToTransferFrom);
 
                 if (account == null || account.Balance < transactions.Amount) return false;
 
-                _transactionsRepo.TransferMoney(transactions);  //Har inte gjort klart stored procedure.
+                _transactionsRepo.TransferMoney(transactions);  
                 return true;
             }
             catch (Exception)
             {
+                
                 return false;
             }
         }

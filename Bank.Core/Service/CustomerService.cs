@@ -44,6 +44,10 @@ namespace Bank.Core.Service
             createNewCustomer.Password = BCrypt.Net.BCrypt.HashPassword(createNewCustomer.Password);
 
             newCustomer = _customerRepo.CreateCustomer(createNewCustomer);
+
+            if(newCustomer.CustomerId.ToString().Length == 0|| newCustomer.AccountId.ToString().Length == 0|| newCustomer.LoginId.ToString().Length ==0)
+                return newCustomer;
+
             newCustomer.CorrectInput = true;
             return newCustomer;
         }
