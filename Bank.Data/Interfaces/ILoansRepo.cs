@@ -10,6 +10,6 @@ namespace Bank.Data.Interfaces
 {
     public interface ILoansRepo
     {
-        int NewLoan(Loans loan);
+        int NewLoan(NewLoanDTO loan);
     }
 }

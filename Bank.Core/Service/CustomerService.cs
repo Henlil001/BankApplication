@@ -38,7 +38,8 @@ namespace Bank.Core.Service
                 createNewCustomer.City is null || createNewCustomer.ZipCode is null ||
                 createNewCustomer.Country is null || createNewCustomer.CountryCode is null ||
                 createNewCustomer.Birthday is null || createNewCustomer.Frequency is null ||
-                createNewCustomer.AccountTypeName is null || createNewCustomer.AccountTypeDescription is null)
+                createNewCustomer.TypeOWNERorDISPONENT is null)
+                
                 return newCustomer;
 
             createNewCustomer.Password = BCrypt.Net.BCrypt.HashPassword(createNewCustomer.Password);

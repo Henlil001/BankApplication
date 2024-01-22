@@ -1,4 +1,5 @@
 ﻿using Bank.Core.Interfaces;
+using Bank.Domain.DTO;
 using Bank.Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,14 +19,14 @@ namespace Bank.Api.Controllers
         }
         [Route("Admin_Create_Loan")]
         [HttpPost]
-        public IActionResult NewLoan(Loans loan)
+        public IActionResult NewLoan(NewLoanDTO loan)
         {
-            int loanId = _loansService.NewLoan(loan);
+            int newLoan = _loansService.NewLoan(loan);
 
-            if (loanId == 0)
-                return BadRequest("Invalied ");
+            if (newLoan == 0)
+                return BadRequest("Invalied");
 
-            return Ok(loanId);
+            return Ok(new {LoanID = newLoan});
         }
     }
 }

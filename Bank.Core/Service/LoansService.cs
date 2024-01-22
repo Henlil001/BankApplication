@@ -1,5 +1,6 @@
 ﻿using Bank.Core.Interfaces;
 using Bank.Data.Interfaces;
+using Bank.Domain.DTO;
 using Bank.Domain.Entites;
 using System;
 using System.Collections.Generic;
@@ -20,20 +21,18 @@ namespace Bank.Core.Service
 
         }
 
-        public int NewLoan(Loans loans)
+        public int NewLoan(NewLoanDTO loan)
         {
-            if (loans.Accounts.AccountId.ToString() is null||
-                loans.Amount.ToString() is null||
-                loans.Duration.ToString() is null||
-                loans.Payments.ToString() is null||
-                loans.Status is null)
+            
+            if (loan.AccountId.ToString().Length == 0|| loan.Amount.ToString().Length == 0) 
                 return 0;
+                 
 
-            var account = _accountsRepo.GetAccount(loans.Accounts.AccountId);
+            var account = _accountsRepo.GetAccount(loan.AccountId);
             if (account == null) return 0;
 
-            int loanId = _loansRepo.NewLoan(loans);
-            return loanId;
+            int loanID = _loansRepo.NewLoan(loan);
+            return loanID;
         }
     }
 }

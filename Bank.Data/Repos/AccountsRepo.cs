@@ -48,7 +48,7 @@ namespace Bank.Data.Repos
                         accounts.AccountTypes = accountTypes;
                         return accounts;
                     }, param: Parameters,
-                    splitOn: "TypeName",
+                    splitOn: "AccountTypesId",
                     commandType: CommandType.StoredProcedure).ToList();
                 return showAccounts;
 
@@ -67,7 +67,7 @@ namespace Bank.Data.Repos
                 {
                     accounts.AccountTypes = accountType;
                     return accounts;
-                }, param: parameters, splitOn: "", commandType: CommandType.StoredProcedure).SingleOrDefault();
+                }, param: parameters, splitOn: "AccountTypesId", commandType: CommandType.StoredProcedure).SingleOrDefault();
                 return account;
             }
         }

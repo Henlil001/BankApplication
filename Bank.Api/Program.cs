@@ -1,9 +1,11 @@
+using AutoMapper;
 using Bank.Core.Interfaces;
 using Bank.Core.Service;
 using Bank.Data.DataModels;
 using Bank.Data.Interfaces;
 using Bank.Data.Repos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -43,6 +45,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+
 //I första delen sätts authentication upp för att hanteras med JWT
 builder.Services.AddAuthentication(opt =>
 {
@@ -66,6 +69,7 @@ builder.Services.AddAuthentication(opt =>
 });
 //Automapper behövs sättas upp som en service för att kunna injecterras när man behöver använda det
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 
 builder.Services.AddScoped<ILoansService, LoansService>();
 builder.Services.AddScoped<ILoansRepo, LoansRepo>();

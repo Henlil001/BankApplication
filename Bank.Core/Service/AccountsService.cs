@@ -28,9 +28,19 @@ namespace Bank.Core.Service
 
             var accountsDTO = new List<AccountsDTO>();
 
+         
+
             foreach (var account in accounts)
             {
-                var mapedaAccounts = _mapper.Map<AccountsDTO>(account);
+
+                var mapedaAccounts = new AccountsDTO
+                {
+                    AccountId = account.AccountId,
+                    AccountType = account.AccountTypes?.TypeName,
+                    Balance = account.Balance,
+                    // Lägg till andra egenskaper här...
+                };
+                //var mapedaAccounts = _mapper.Map<AccountsDTO>(account);
                 accountsDTO.Add(mapedaAccounts);
             }
             return accountsDTO;
