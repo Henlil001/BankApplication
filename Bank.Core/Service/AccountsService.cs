@@ -28,17 +28,14 @@ namespace Bank.Core.Service
 
             var accountsDTO = new List<AccountsDTO>();
 
-         
-
             foreach (var account in accounts)
             {
-
                 var mapedaAccounts = new AccountsDTO
                 {
                     AccountId = account.AccountId,
-                    AccountType = account.AccountTypes?.TypeName,
+                    AccountType = account.AccountTypes.TypeName,
                     Balance = account.Balance,
-                    // Lägg till andra egenskaper här...
+
                 };
                 //var mapedaAccounts = _mapper.Map<AccountsDTO>(account);
                 accountsDTO.Add(mapedaAccounts);
@@ -47,9 +44,9 @@ namespace Bank.Core.Service
         }
         public int CreateNewAccount(CreateAccountDTO account, int customerId)
         {
-            if (account.Frequency is null && !(account.AccountType1ForStandardPrivat2ForSavings==1 || account.AccountType1ForStandardPrivat2ForSavings == 2))
+            if (account.Frequency is null && !(account.AccountType1ForStandardPrivat2ForSavings == 1 || account.AccountType1ForStandardPrivat2ForSavings == 2))
                 return 0;
-            
+
             return _accountsRepo.CreateNewAccount(account, customerId);
         }
 

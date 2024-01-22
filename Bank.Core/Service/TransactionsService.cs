@@ -26,15 +26,23 @@ namespace Bank.Core.Service
         }
         public List<TransactionsDTO> ShowTransactions(int accountId)
         {
-
             var transactions = _transactionsRepo.ShowTransactions(accountId);
 
             var transactionsDTO = new List<TransactionsDTO>();
 
             foreach (var transaction in transactions)
             {
-                var mappedTransactions = _mapper.Map<TransactionsDTO>(transaction);
-                transactionsDTO.Add(mappedTransactions);
+                var mapedTransactions = new TransactionsDTO
+                {
+                    Date = transaction.Date,
+                    Operation = transaction.Operation,
+                    Amount = transaction.Amount,
+                    Balance = transaction.Balance,
+                    Comment = transaction.Symbol
+
+                };
+                //var mappedTransactions = _mapper.Map<TransactionsDTO>(transaction);
+                transactionsDTO.Add(mapedTransactions);
             }
             return transactionsDTO;
         }
@@ -54,12 +62,12 @@ namespace Bank.Core.Service
 
                 if (account == null || account.Balance < transactions.Amount) return false;
 
-                _transactionsRepo.TransferMoney(transactions);  
+                _transactionsRepo.TransferMoney(transactions);
                 return true;
             }
             catch (Exception)
             {
-                
+
                 return false;
             }
         }

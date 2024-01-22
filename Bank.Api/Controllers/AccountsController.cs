@@ -51,7 +51,7 @@ namespace Bank.Api.Controllers
                 if (id == 0)
                     return BadRequest("remember to fill in Frequensy and AccountType 1 or 2. ");
 
-                return Ok(id);
+                return Ok(new {NewAccountId = id });
 
             }
             catch (Exception)
