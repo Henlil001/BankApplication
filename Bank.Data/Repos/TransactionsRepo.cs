@@ -18,28 +18,50 @@ namespace Bank.Data.Repos
         {
             _dbContext = bankDBContext;
         }
-        public async Task<List<Transactions>> ShowTransactions(int accountId)
+        //public async Task<List<Transactions>> ShowTransactions(int accountId)
+        //{
+        //    return await Task.Run(() =>
+        //    {
+        //        using (IDbConnection db = _dbContext.GetConnection())
+        //        {
+        //            DynamicParameters parameters = new DynamicParameters();
+        //            parameters.Add("@AccountId", accountId);
+
+        //            //return db.Query<Transactions>("ShowTransactions", parameters, commandType:CommandType.StoredProcedure).ToList();
+
+        //            var showTransactions = db.Query<Transactions, Accounts, Transactions>("ShowTransactions",
+        //                (transactions, accounts) =>
+        //                {
+        //                    transactions.Accounts = accounts;
+        //                    return transactions;
+        //                }, param: parameters,
+        //                splitOn: "AccountId",
+        //                commandType: CommandType.StoredProcedure).ToList();
+        //            return showTransactions;
+        //        }
+        //    });
+        //}
+        public async Task<List<Transactions>> ShowTransactionsAsync(int accountId)
         {
-            return await Task.Run(() =>
+            using (IDbConnection db = _dbContext.GetConnection())
             {
-                using (IDbConnection db = _dbContext.GetConnection())
-                {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@AccountId", accountId);
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@AccountId", accountId);
 
-                    //return db.Query<Transactions>("ShowTransactions", parameters, commandType:CommandType.StoredProcedure).ToList();
+                var showTransactions = await db.QueryAsync<Transactions, Accounts, Transactions>(
+                    "ShowTransactions",
+                    (transactions, accounts) =>
+                    {
+                        transactions.Accounts = accounts;
+                        return transactions;
+                    },
+                    param: parameters,
+                    splitOn: "AccountId",
+                    commandType: CommandType.StoredProcedure
+                );
 
-                    var showTransactions = db.Query<Transactions, Accounts, Transactions>("ShowTransactions",
-                        (transactions, accounts) =>
-                        {
-                            transactions.Accounts = accounts;
-                            return transactions;
-                        }, param: parameters,
-                        splitOn: "AccountId",
-                        commandType: CommandType.StoredProcedure).ToList();
-                    return showTransactions;
-                }
-            });
+                return showTransactions.ToList();
+            }
         }
 
         public void TransferMoney(TransactionsInput transactions)
