@@ -10,7 +10,7 @@ namespace Bank.Data.Interfaces
 {
     public interface ITransactionsRepo
     {
-        List<Transactions> ShowTransactions(int accountId);
+        Task<List<Transactions>> ShowTransactions(int accountId);
         void TransferMoney(TransactionsInput transactions);
     }
 }

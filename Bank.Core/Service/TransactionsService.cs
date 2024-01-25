@@ -26,7 +26,7 @@ namespace Bank.Core.Service
         }
         public List<TransactionsDTO> ShowTransactions(int accountId)
         {
-            var transactions = _transactionsRepo.ShowTransactions(accountId);
+            var transactions = _transactionsRepo.ShowTransactions(accountId).Result;
 
             var transactionsDTO = new List<TransactionsDTO>();
 
