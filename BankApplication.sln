@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank.Api", "Bank.Api\Bank.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.Test", "Bank.Test\Bank.Test.csproj", "{E767E6BD-24D8-438C-8DAC-98E3CB370EA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.Test1", "Bank.Test1\Bank.Test1.csproj", "{99399CE9-AC32-42A1-8CBB-A68FFDB8405C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,10 +39,6 @@ Global
 		{E767E6BD-24D8-438C-8DAC-98E3CB370EA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E767E6BD-24D8-438C-8DAC-98E3CB370EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E767E6BD-24D8-438C-8DAC-98E3CB370EA5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99399CE9-AC32-42A1-8CBB-A68FFDB8405C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99399CE9-AC32-42A1-8CBB-A68FFDB8405C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99399CE9-AC32-42A1-8CBB-A68FFDB8405C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99399CE9-AC32-42A1-8CBB-A68FFDB8405C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

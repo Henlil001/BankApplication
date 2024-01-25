@@ -53,14 +53,14 @@ namespace Bank.Core.Service
             {
                 if (transactions.AccountToTransferFrom.ToString() is null ||
                     transactions.AccountToTransferTo.ToString() is null ||
-                    transactions.Type is null ||
-                    transactions.Operation is null ||
                     transactions.Amount.ToString() is null)
                     return false;
 
-                var account = _accountsRepo.GetAccount(transactions.AccountToTransferFrom);
+                var accountFrom = _accountsRepo.GetAccount(transactions.AccountToTransferFrom);
+                var accountTo = _accountsRepo.GetAccount(transactions.AccountToTransferTo);
 
-                if (account == null || account.Balance < transactions.Amount) return false;
+                if (accountFrom == null ||accountTo == null || accountFrom.Balance < transactions.Amount) 
+                    return false;
 
                 _transactionsRepo.TransferMoney(transactions);
                 return true;

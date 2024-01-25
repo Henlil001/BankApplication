@@ -11,12 +11,7 @@ namespace Bank.Domain.UIInput
     {
         public int AccountToTransferTo { get; set; }
         public int AccountToTransferFrom { get; set; }
-        public string Type { get; set; }
-        public string Operation { get; set; }
         public decimal Amount { get; set; }
-        public decimal Balance { get; set; }
-        public string? Symbol { get; set; }
-        public string? Bank { get; set; }
-        public string? Account { get; set; }
+
     }
 }

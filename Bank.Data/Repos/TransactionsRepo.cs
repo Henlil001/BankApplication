@@ -45,12 +45,7 @@ namespace Bank.Data.Repos
             parameters.Add("@AccountToTransferTo", transactions.AccountToTransferTo);
             parameters.Add("@AccountToTransferFrom", transactions.AccountToTransferFrom);
             parameters.Add("@Date", DateTime.Now);
-            parameters.Add("@Operation", transactions.Operation);
-            parameters.Add("@Type", transactions.Type);
             parameters.Add("@Amount", transactions.Amount);
-            parameters.Add("@Symbol", transactions.Symbol);
-            parameters.Add("@Bank", transactions.Bank);
-            parameters.Add("@Account", transactions.Account);
 
 
             using (IDbConnection db = _dbContext.GetConnection())
