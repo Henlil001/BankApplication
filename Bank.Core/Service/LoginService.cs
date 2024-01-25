@@ -25,9 +25,9 @@ namespace Bank.Core.Service
             _customerRepo = customerRepo;
             _accountsRepo = accountsRepo;
         }
-        public async Task<string> Login(string username, string password)
+        public async Task<string> LoginAsync(string username, string password)
         {
-            var checkUsername = await _loginRepo.CheckUsername(username);
+            var checkUsername = await _loginRepo.CheckUsernameAsync(username);
 
             if (checkUsername is null || BCrypt.Net.BCrypt.Verify(password, checkUsername.Password) == false)
                 return string.Empty;
@@ -69,7 +69,7 @@ namespace Bank.Core.Service
             if (login.UserName is null || login.Password.Length < 5 || login.Customer is null)
                 return newLogin;
 
-            var check = _loginRepo.CheckUsername(login.UserName);
+            var check = _loginRepo.CheckUsernameAsync(login.UserName);
 
             if (check != null)
                 return newLogin;

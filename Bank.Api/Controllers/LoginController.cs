@@ -27,7 +27,7 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                string token = _Service.Login(username, password).Result;
+                string token = _Service.LoginAsync(username, password).Result;
 
                 if (token.IsNullOrEmpty())
                     return NotFound("Invalied login");

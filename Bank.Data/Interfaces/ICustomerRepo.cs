@@ -13,7 +13,7 @@ namespace Bank.Data.Interfaces
     public interface ICustomerRepo
     {
         List<Customer> GetAllCustomers();
-        Task<NewCustomerDTO> CreateCustomer(CreateNewCustomerInput createNewCustomer);
+        Task<NewCustomerDTO> CreateCustomerAsync(CreateNewCustomerInput createNewCustomer);
 
     }
 }

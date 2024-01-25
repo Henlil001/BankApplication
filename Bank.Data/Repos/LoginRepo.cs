@@ -36,7 +36,7 @@ namespace Bank.Data.Repos
             }
         }
 
-        public async Task<Login?> CheckUsername(string username)
+        public async Task<Login?> CheckUsernameAsync(string username)
         {
             return await Task.Run(() =>
             {

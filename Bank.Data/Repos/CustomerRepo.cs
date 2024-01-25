@@ -31,7 +31,7 @@ namespace Bank.Data.Repos
             }
         }
 
-        public async Task<NewCustomerDTO> CreateCustomer(CreateNewCustomerInput customer)
+        public async Task<NewCustomerDTO> CreateCustomerAsync(CreateNewCustomerInput customer)
         {
             return await Task.Run(() =>
             {

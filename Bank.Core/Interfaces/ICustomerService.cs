@@ -13,7 +13,7 @@ namespace Bank.Core.Interfaces
     {
         List<Customer> GetAllCustomers();
 
-        Task<(NewCustomerDTO, bool)> CreateCostumer(CreateNewCustomerInput createNewCustomer);
+        Task<(NewCustomerDTO, bool)> CreateCostumerAsync(CreateNewCustomerInput createNewCustomer);
 
         
 

@@ -28,11 +28,11 @@ namespace Bank.Api.Controllers
         [Route("Admin_Create_New_Customer")]
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateCustomer(CreateNewCustomerInput createNewCustomer)
+        public IActionResult CreateCustomerAsync(CreateNewCustomerInput createNewCustomer)
         {
             try
             {
-                var (newCustomer, check) = _customerService.CreateCostumer(createNewCustomer).Result;
+                var (newCustomer, check) = _customerService.CreateCostumerAsync(createNewCustomer).Result;
 
                 if (check)
                     return Ok(newCustomer);
