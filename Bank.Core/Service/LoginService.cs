@@ -25,9 +25,9 @@ namespace Bank.Core.Service
             _customerRepo = customerRepo;
             _accountsRepo = accountsRepo;
         }
-        public string Login(string username, string password)
+        public async Task<string> Login(string username, string password)
         {
-            var checkUsername = _loginRepo.CheckUsername(username);
+            var checkUsername = await _loginRepo.CheckUsername(username);
 
             if (checkUsername is null || BCrypt.Net.BCrypt.Verify(password, checkUsername.Password) == false)
                 return string.Empty;

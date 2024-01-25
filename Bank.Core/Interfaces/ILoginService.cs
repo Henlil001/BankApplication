@@ -10,7 +10,7 @@ namespace Bank.Core.Interfaces
 {
     public interface ILoginService
     {
-        string Login(string username, string password);
+        Task<string> Login(string username, string password);
 
         NewCustomerDTO CreateLoginToExictingCustomer(Login login);
 

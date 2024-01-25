@@ -23,12 +23,12 @@ namespace Bank.Core.Service
         }
 
 
-        public NewCustomerDTO CreateCostumer(CreateNewCustomerInput createNewCustomer)
+        public async Task<(NewCustomerDTO, bool)> CreateCostumer(CreateNewCustomerInput createNewCustomer)
         {
 
             var newCustomer = new NewCustomerDTO();
 
-            var check = _loginRepo.CheckUsername(createNewCustomer.Username);
+            var check = await _loginRepo.CheckUsername(createNewCustomer.Username);
 
             if (check != null ||
                 createNewCustomer.Username is null || createNewCustomer.Password is null ||
@@ -39,27 +39,24 @@ namespace Bank.Core.Service
                 createNewCustomer.Country is null || createNewCustomer.CountryCode is null ||
                 createNewCustomer.Birthday is null || createNewCustomer.Frequency is null ||
                 createNewCustomer.TypeOWNERorDISPONENT is null)
-                
-                return newCustomer;
+
+                return (newCustomer, false);
 
             createNewCustomer.Password = BCrypt.Net.BCrypt.HashPassword(createNewCustomer.Password);
 
-            newCustomer = _customerRepo.CreateCustomer(createNewCustomer);
+            newCustomer = await _customerRepo.CreateCustomer(createNewCustomer);
 
-            if(newCustomer.CustomerId.ToString().Length == 0|| newCustomer.AccountId.ToString().Length == 0|| newCustomer.LoginId.ToString().Length ==0)
-                return newCustomer;
+            if (newCustomer.CustomerId.ToString().Length == 0 || newCustomer.AccountId.ToString().Length == 0 || newCustomer.LoginId.ToString().Length == 0)
+                return (newCustomer, false);
 
-            newCustomer.CorrectInput = true;
-            return newCustomer;
+
+            return (newCustomer, true);
         }
 
 
 
         public List<Customer> GetAllCustomers()
         {
-            string password = BCrypt.Net.BCrypt.HashPassword("henrik123");
-
-
             return _customerRepo.GetAllCustomers();
         }
 

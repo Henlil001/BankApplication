@@ -32,9 +32,9 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                var newCustomer = _customerService.CreateCostumer(createNewCustomer);
+                var (newCustomer, check) = _customerService.CreateCostumer(createNewCustomer).Result;
 
-                if (newCustomer.CorrectInput is true)
+                if (check)
                     return Ok(newCustomer);
 
                 return BadRequest("Remember to fill in all information / or Invalied Username.");

@@ -35,23 +35,25 @@ namespace Bank.Data.Repos
                 return login;
             }
         }
-        
-        public Login? CheckUsername(string username)
+
+        public async Task<Login?> CheckUsername(string username)
         {
-            using (IDbConnection db = _DBContext.GetConnection())
+            return await Task.Run(() =>
             {
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@UserName", username);
+                using (IDbConnection db = _DBContext.GetConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@UserName", username);
 
-                var login = db.Query<Login, Customer, Login>("CheckUserName",
-                    (login, customer) =>
-                    {
-                        login.Customer = customer;
-                        return login;
-                    }, param: parameters, splitOn: "CustomerId", commandType: CommandType.StoredProcedure).SingleOrDefault();
-                return login;
-
-            }
+                    var login = db.Query<Login, Customer, Login>("CheckUserName",
+                        (login, customer) =>
+                        {
+                            login.Customer = customer;
+                            return login;
+                        }, param: parameters, splitOn: "CustomerId", commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    return login;
+                }
+            });
         }
         public NewCustomerDTO CreateLoginToExictingCustomer(Login login)
         {
