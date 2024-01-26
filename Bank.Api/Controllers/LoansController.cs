@@ -23,8 +23,10 @@ namespace Bank.Api.Controllers
         {
             int newLoan = _loansService.NewLoan(loan);
 
+            if (newLoan == -1)
+                return BadRequest("Invalied data");
             if (newLoan == 0)
-                return BadRequest("Invalied");
+                return BadRequest("Account dosent exist.");
 
             return Ok(new {LoanID = newLoan});
         }

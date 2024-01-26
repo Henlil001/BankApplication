@@ -25,9 +25,8 @@ namespace Bank.Core.Service
         {
             
             if (loan.AccountId.ToString().Length == 0|| loan.Amount.ToString().Length == 0) 
-                return 0;
+                return -1;
                  
-
             var account = _accountsRepo.GetAccount(loan.AccountId);
             if (account == null) return 0;
 

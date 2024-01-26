@@ -32,7 +32,9 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                var (newCustomer, check) = _customerService.CreateCostumerAsync(createNewCustomer).Result;
+                var tuple = _customerService.CreateCostumer(createNewCustomer);
+                var newCustomer = tuple.Item1;
+                var check = tuple.Item2;
 
                 if (check)
                     return Ok(newCustomer);

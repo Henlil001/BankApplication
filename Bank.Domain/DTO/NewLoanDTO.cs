@@ -10,6 +10,5 @@ namespace Bank.Domain.DTO
     {
         public int AccountId { get; set; }
         public decimal Amount { get; set; }
-        public int @LoanId { get; set; }
     }
 }
