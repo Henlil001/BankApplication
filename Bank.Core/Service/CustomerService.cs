@@ -23,12 +23,12 @@ namespace Bank.Core.Service
         }
 
 
-        public  (NewCustomerDTO, bool) CreateCostumer(CreateNewCustomerInput createNewCustomer)
+        public async Task<(NewCustomerDTO, bool)> CreateCostumerAsync(CreateNewCustomerInput createNewCustomer)
         {
 
             var newCustomer = new NewCustomerDTO();
 
-            var check = _loginRepo.CheckUsernameAsync(createNewCustomer.Username);
+            var check = await _loginRepo.CheckUsernameAsync(createNewCustomer.Username);
 
             if (check != null ||
                 createNewCustomer.Username is null || createNewCustomer.Password is null ||
