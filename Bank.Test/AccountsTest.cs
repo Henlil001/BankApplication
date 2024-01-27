@@ -9,14 +9,14 @@ namespace Bank.Test
     public class AccountsTest
     {
         [Theory]
-        [InlineData(3, 0)]
-        [InlineData(4, 0)]
-        [InlineData(5, 0)]
-        [InlineData(6, 0)]
-        [InlineData(7, 0)]
-        [InlineData(1, 2)]
-        [InlineData(2, 2)]
-        public void Test_Create_New_Account__(int accountType, int expectedReturn)
+        [InlineData(3, 0)] //Fel inparameter, inget kontoSkapas
+        [InlineData(4, 0)] //Fel inparameter, inget kontoSkapas
+        [InlineData(5, 0)] //Fel inparameter, inget kontoSkapas
+        [InlineData(6, 0)] //Fel inparameter, inget kontoSkapas
+        [InlineData(7, 0)] //Fel inparameter, inget kontoSkapas
+        [InlineData(1, 2)] //Här skapas ett nytt privatkonto
+        [InlineData(2, 2)] //Här skapas ett nytt sparkonto
+        public void Test_CreateNewAccount__AccountType_Most_Be_1_Or_2_To_Create_New_Account(int accountType, int expectedReturn)
         {
             var accountRepo = new Mock<IAccountsRepo>();
             var mapper = new Mock<IMapper>();
