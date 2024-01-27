@@ -1,12 +1,9 @@
-using AutoMapper;
 using Bank.Core.Interfaces;
 using Bank.Core.Service;
 using Bank.Data.DataModels;
 using Bank.Data.Interfaces;
 using Bank.Data.Repos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;

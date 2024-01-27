@@ -3,13 +3,9 @@ using Bank.Data.Interfaces;
 using Bank.Domain.DTO;
 using Bank.Domain.Entites;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Bank.Core.Service
 {
@@ -63,30 +59,30 @@ namespace Bank.Core.Service
             return token;
 
         }
-        public NewCustomerDTO CreateLoginToExictingCustomer(Login login)
+        public (NewCustomerDTO, bool) CreateLoginToExictingCustomer(Login login)
         {
             var newLogin = new NewCustomerDTO();
             if (login.UserName is null || login.Password.Length < 5 || login.Customer is null)
-                return newLogin;
+                return (newLogin, false);
 
             var check = _loginRepo.CheckUsernameAsync(login.UserName);
 
             if (check != null)
-                return newLogin;
+                return (newLogin, false);
 
             var checkCustomerInput = _customerRepo.GetAllCustomers().Where(c => c.GivenName == login.Customer.GivenName &&
                                                                            c.SurName == login.Customer.SurName &&
                                                                            c.StreetAddress == login.Customer.StreetAddress &&
                                                                            c.Birthday == login.Customer.Birthday);
             if (checkCustomerInput is null)
-                return newLogin;
+                return (newLogin, false);
 
             login.Password = BCrypt.Net.BCrypt.HashPassword(login.Password);
             login.Role = "Customer";
 
             newLogin = _loginRepo.CreateLoginToExictingCustomer(login);
-            newLogin.CorrectInput = true;
-            return newLogin;
+            
+            return (newLogin, true);
         }
 
     }

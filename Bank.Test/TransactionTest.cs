@@ -2,13 +2,7 @@
 using Bank.Core.Service;
 using Bank.Data.Interfaces;
 using Bank.Domain.Entites;
-using Bank.Domain.UIInput;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bank.Test
 {

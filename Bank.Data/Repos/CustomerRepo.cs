@@ -1,15 +1,8 @@
 ﻿using Bank.Data.Interfaces;
 using Bank.Domain.DTO;
 using Bank.Domain.Entites;
-using Bank.Domain.UIInput;
 using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bank.Data.Repos
 {

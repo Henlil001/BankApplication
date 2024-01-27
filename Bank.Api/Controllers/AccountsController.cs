@@ -1,9 +1,6 @@
 ﻿using Bank.Core.Interfaces;
 using Bank.Domain.DTO;
-using Bank.Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 

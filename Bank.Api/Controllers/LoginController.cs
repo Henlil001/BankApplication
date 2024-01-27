@@ -1,12 +1,8 @@
 ﻿using Bank.Core.Interfaces;
 using Bank.Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace Bank.Api.Controllers
 {
@@ -48,10 +44,12 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                var newLogin = _Service.CreateLoginToExictingCustomer(login);
+                var tuple = _Service.CreateLoginToExictingCustomer(login);
+                var newLogin = tuple.Item1;
+                var check = tuple.Item2;
 
-                if (newLogin.CorrectInput is false)
-                    return BadRequest("Password need to be atleast 6 char long / or Invalied Username");
+                if (check == false)
+                    return BadRequest("Invalied Username and Password need to be atleast 6 char long");
 
                 return Ok(newLogin);
             }

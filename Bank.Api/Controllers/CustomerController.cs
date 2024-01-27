@@ -1,10 +1,7 @@
 ﻿using Bank.Core.Interfaces;
-using Bank.Domain.Entites;
-using Bank.Domain.UIInput;
+using Bank.Domain.DTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Bank.Api.Controllers
 {

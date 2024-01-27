@@ -1,8 +1,6 @@
 ﻿using Bank.Core.Interfaces;
 using Bank.Domain.DTO;
-using Bank.Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.Api.Controllers

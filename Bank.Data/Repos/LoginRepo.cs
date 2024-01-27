@@ -2,12 +2,7 @@
 using Bank.Domain.DTO;
 using Bank.Domain.Entites;
 using Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bank.Data.Repos
 {
@@ -71,12 +66,9 @@ namespace Bank.Data.Repos
                 parameters.Add("@CustomerId", dbType: DbType.Int32, direction: ParameterDirection.Output);
                 parameters.Add("@LoginId", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-                // Exekvera den lagrade proceduren
                 db.Execute("CreateLoginToExistingCustomer", parameters, commandType: CommandType.StoredProcedure);
 
                 // Hämta utmatningsvärdena
-                //int customerId = parameters.Get<int>("@CustomerId");
-                //int loginId = parameters.Get<int>("@LoginId");
 
                 // Skapa och returnera en NewCustomer med de erhållna värdena
                 return new NewCustomerDTO
@@ -86,7 +78,7 @@ namespace Bank.Data.Repos
 
                 };
 
-                // return db.QuerySingle<NewCustomer>("CreateLoginToExictingCustomer", parameters, commandType: CommandType.StoredProcedure);
+
             }
         }
     }

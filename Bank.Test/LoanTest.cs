@@ -3,18 +3,13 @@ using Bank.Data.Interfaces;
 using Bank.Domain.DTO;
 using Bank.Domain.Entites;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bank.Test
 {
     public class LoanTest
     {
         [Fact]
-        public void NewLoan_Return_True_When_Seccsefull()
+        public void NewLoan_Return_New_LoanID_When_Seccsefull()
         {
             int expectedreturn = 45;
 
