@@ -13,5 +13,9 @@
             AccountId = accountId;
             Balance = balance;
         }
+        public Accounts()
+        {
+            
+        }
     }
 }
