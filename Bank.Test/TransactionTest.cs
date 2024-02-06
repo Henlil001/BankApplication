@@ -17,6 +17,7 @@ namespace Bank.Test
             var transactionRepo = new Mock<ITransactionsRepo>();
             var acountRepo = new Mock<IAccountsRepo>();
             var mapper = new Mock<IMapper>();
+            var dispositionsRepo = new Mock<IDispositionsRepo>();
 
             var transactionInput = new TransactionsInput(1, 2, 1000.5m);
             var acountTo = new Accounts(1, 50);
@@ -25,7 +26,7 @@ namespace Bank.Test
             acountRepo.Setup(repo => repo.GetAccount(accountFrom.AccountId)).Returns(accountFrom);
             acountRepo.Setup(repo => repo.GetAccount(acountTo.AccountId)).Returns(acountTo);
             
-            var service = new TransactionsService(transactionRepo.Object, mapper.Object, acountRepo.Object);
+            var service = new TransactionsService(transactionRepo.Object, mapper.Object, acountRepo.Object, dispositionsRepo.Object);
 
             var result = service.TransferMoney(transactionInput);
 

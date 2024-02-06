@@ -18,7 +18,8 @@ namespace Bank.Data.Repos
             using (IDbConnection db = _dbContext.GetConnection())
             {
                 string sql = "select * from Customers";
-                return (await db.QueryAsync<Customer>(sql)).ToList();
+                var allCustomers = await db.QueryAsync<Customer>(sql);
+                return allCustomers.ToList();
             }
         }
         public NewCustomerDTO CreateCustomer(CreateNewCustomerInput customer)

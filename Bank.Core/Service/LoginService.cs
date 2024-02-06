@@ -13,13 +13,13 @@ namespace Bank.Core.Service
     {
         private readonly ILoginRepo _loginRepo;
         private readonly ICustomerRepo _customerRepo;
-        private readonly IAccountsRepo _accountsRepo;
 
-        public LoginService(ILoginRepo repo, ICustomerRepo customerRepo, IAccountsRepo accountsRepo)
+
+        public LoginService(ILoginRepo repo, ICustomerRepo customerRepo)
         {
             _loginRepo = repo;
             _customerRepo = customerRepo;
-            _accountsRepo = accountsRepo;
+
         }
         public async Task<string> LoginAsync(string username, string password)
         {
@@ -72,15 +72,16 @@ namespace Bank.Core.Service
 
             var allCustomer = await _customerRepo.GetAllCustomersAsync();
 
-            var checkCustomerInput = allCustomer.Where(c => c.GivenName == login.Customer.GivenName &&
+            var checkCustomerInput = allCustomer.SingleOrDefault(c => c.GivenName == login.Customer.GivenName &&
                                                            c.SurName == login.Customer.SurName &&
                                                            c.StreetAddress == login.Customer.StreetAddress &&
-                                                           c.Birthday == login.Customer.Birthday).Any();
-            if (!checkCustomerInput)
+                                                           c.Birthday == login.Customer.Birthday);
+            if (checkCustomerInput is null)
                 return (newLogin, false);
 
             login.Password = BCrypt.Net.BCrypt.HashPassword(login.Password);
             login.Role = "Customer";
+            login.Customer.CustomerId = checkCustomerInput.CustomerId;
 
             newLogin = _loginRepo.CreateLoginToExictingCustomer(login);
 

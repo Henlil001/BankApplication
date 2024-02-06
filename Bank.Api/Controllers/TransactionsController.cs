@@ -2,6 +2,7 @@
 using Bank.Domain.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Bank.Api.Controllers
 {
@@ -21,7 +22,16 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                return Ok(_transactionsService.ShowTransactionsAsync(accountId).Result); ;
+                var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                int UserId = int.Parse(id);
+                var tuple =_transactionsService.ShowTransactionsAsync(accountId, UserId).Result;
+                var transactionsDTO = tuple.Item1;
+                var check = tuple.Item2;
+
+                if (check is false)
+                    return Unauthorized("You can only se your accounts transactions.");
+
+                return Ok(transactionsDTO);
             }
             catch (Exception)
             {

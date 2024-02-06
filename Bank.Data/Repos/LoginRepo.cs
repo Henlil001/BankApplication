@@ -41,11 +41,7 @@ namespace Bank.Data.Repos
                 parameters.Add("@Username", login.UserName);
                 parameters.Add("@Password", login.Password);
                 parameters.Add("@Role", login.Role);
-                parameters.Add("@Givenname", login.Customer.GivenName);
-                parameters.Add("@Surname", login.Customer.SurName);
-                parameters.Add("@StreetAddress", login.Customer.StreetAddress);
-                parameters.Add("@Birthday", login.Customer.Birthday);
-                parameters.Add("@CustomerId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add("@CustomerId", login.Customer.CustomerId);
                 parameters.Add("@LoginId", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 db.Execute("CreateLoginToExistingCustomer", parameters, commandType: CommandType.StoredProcedure);
@@ -53,7 +49,6 @@ namespace Bank.Data.Repos
                 // Skapa och returnera en NewCustomer med de erhållna värdena
                 return new NewCustomerDTO
                 {
-                    CustomerId = parameters.Get<int>("@CustomerId"),
                     LoginId = parameters.Get<int>("@LoginId")
 
                 };

@@ -3,8 +3,8 @@
     public class Dispositions
     {
         public int DispositionId { get; set; }
-        public List<Customer> Customer { get; set; }
-        public List<Accounts> Accounts { get; set; }
+        public int CustomerId { get; set; }
+        public int AccountId { get; set; }
         public string Type { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Bank.Core.Interfaces;
 using Bank.Data.Interfaces;
 using Bank.Domain.DTO;
 
+
 namespace Bank.Core.Service
 {
     public class TransactionsService : ITransactionsService
@@ -10,14 +11,23 @@ namespace Bank.Core.Service
         private readonly ITransactionsRepo _transactionsRepo;
         private readonly IAccountsRepo _accountsRepo;
         private readonly IMapper _mapper;
-        public TransactionsService(ITransactionsRepo transactionsRepo, IMapper mapper, IAccountsRepo accountsRepo)
+        private readonly IDispositionsRepo _dispositionsRepo;
+        public TransactionsService(ITransactionsRepo transactionsRepo, IMapper mapper, IAccountsRepo accountsRepo, IDispositionsRepo dispositionsRepo)
         {
             _transactionsRepo = transactionsRepo;
             _mapper = mapper;
             _accountsRepo = accountsRepo;
+            _dispositionsRepo = dispositionsRepo;
         }
-        public async Task<List<TransactionsDTO>> ShowTransactionsAsync(int accountId)
+        public async Task<(List<TransactionsDTO>,bool)> ShowTransactionsAsync(int accountId, int id)
         {
+            var dispositions = _dispositionsRepo.GetDispositions(id).Where(d => d.AccountId == accountId).ToList();
+
+            if (!dispositions.Any())
+                return (new List<TransactionsDTO>(), false);
+
+            
+
             var transactions = await _transactionsRepo.ShowTransactionsAsync(accountId);
 
             var transactionsDTO = new List<TransactionsDTO>();
@@ -36,7 +46,7 @@ namespace Bank.Core.Service
                 //var mappedTransactions = _mapper.Map<TransactionsDTO>(transaction);
                 transactionsDTO.Add(mapedTransactions);
             }
-            return transactionsDTO;
+            return (transactionsDTO, true);
         }
 
         public bool TransferMoney(TransactionsInput transactions)

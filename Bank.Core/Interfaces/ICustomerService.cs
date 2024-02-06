@@ -6,6 +6,6 @@ namespace Bank.Core.Interfaces
     public interface ICustomerService
     {
         Task<(NewCustomerDTO, bool)> CreateCostumer(CreateNewCustomerInput createNewCustomer);
-              
+
     }
 }
