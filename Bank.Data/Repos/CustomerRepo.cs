@@ -13,63 +13,58 @@ namespace Bank.Data.Repos
         {
             _dbContext = dBContext;
         }
-
-
-        public List<Customer> GetAllCustomers()
+        public async Task <List<Customer>> GetAllCustomersAsync()
         {
             using (IDbConnection db = _dbContext.GetConnection())
             {
                 string sql = "select * from Customers";
-                return db.Query<Customer>(sql).ToList();
+                return (await db.QueryAsync<Customer>(sql)).ToList();
             }
         }
-
-        public async Task<NewCustomerDTO> CreateCustomerAsync(CreateNewCustomerInput customer)
+        public NewCustomerDTO CreateCustomer(CreateNewCustomerInput customer)
         {
-            return await Task.Run(() =>
+
+            using (IDbConnection db = _dbContext.GetConnection())
             {
-                using (IDbConnection db = _dbContext.GetConnection())
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@UserName", customer.Username);
+                parameters.Add("@Password", customer.Password);
+                parameters.Add("@Role", "Customer");
+                parameters.Add("@Gender", customer.Gender);
+                parameters.Add("@GivenName", customer.GivenName);
+                parameters.Add("@Surname", customer.SurName);
+                parameters.Add("@Streetaddress", customer.StreetAddress);
+                parameters.Add("@City", customer.City);
+                parameters.Add("@Zipcode", customer.ZipCode);
+                parameters.Add("@Country", customer.Country);
+                parameters.Add("@CountryCode", customer.CountryCode);
+                parameters.Add("@Birthday", customer.Birthday);
+                parameters.Add("@TelephoneCountryCode", customer.TelephoneCountryCode);
+                parameters.Add("@TelephoneNumber", customer.TelephoneNumber);
+                parameters.Add("@Emailaddress", customer.EmailAddress);
+                parameters.Add("@Frequency", customer.Frequency);
+                parameters.Add("@Created", DateTime.Now);
+                parameters.Add("@Balance", 0, 00);
+                parameters.Add("@AccountType", 2);
+                parameters.Add("@Type", customer.TypeOWNERorDISPONENT);
+
+                // Lägg till utmatningsparametrar
+                parameters.Add("@CustomerId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add("@LoginId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                parameters.Add("@AccountId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                // Exekvera den lagrade proceduren
+                db.Execute("CreateCustomer", parameters, commandType: CommandType.StoredProcedure);
+
+
+                // Skapa och returnera en NewCustomer med de erhållna värdena
+                return new NewCustomerDTO
                 {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@UserName", customer.Username);
-                    parameters.Add("@Password", customer.Password);
-                    parameters.Add("@Role", "Customer");
-                    parameters.Add("@Gender", customer.Gender);
-                    parameters.Add("@GivenName", customer.GivenName);
-                    parameters.Add("@Surname", customer.SurName);
-                    parameters.Add("@Streetaddress", customer.StreetAddress);
-                    parameters.Add("@City", customer.City);
-                    parameters.Add("@Zipcode", customer.ZipCode);
-                    parameters.Add("@Country", customer.Country);
-                    parameters.Add("@CountryCode", customer.CountryCode);
-                    parameters.Add("@Birthday", customer.Birthday);
-                    parameters.Add("@TelephoneCountryCode", customer.TelephoneCountryCode);
-                    parameters.Add("@TelephoneNumber", customer.TelephoneNumber);
-                    parameters.Add("@Emailaddress", customer.EmailAddress);
-                    parameters.Add("@Frequency", customer.Frequency);
-                    parameters.Add("@Created", DateTime.Now);
-                    parameters.Add("@Balance", 0, 00);
-                    parameters.Add("@AccountType", 2);
-                    parameters.Add("@Type", customer.TypeOWNERorDISPONENT);
-
-                    // Lägg till utmatningsparametrar
-                    parameters.Add("@CustomerId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-                    parameters.Add("@LoginId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-                    parameters.Add("@AccountId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-
-                    // Exekvera den lagrade proceduren
-                    db.Execute("CreateCustomer", parameters, commandType: CommandType.StoredProcedure);
-
-
-                    // Skapa och returnera en NewCustomer med de erhållna värdena
-                    return new NewCustomerDTO
-                    {
-                        CustomerId = parameters.Get<int>("@CustomerId"),
-                        LoginId = parameters.Get<int>("@LoginId"),
-                        AccountId = parameters.Get<int>("@AccountId")
-                    };
-                }
-            });
+                    CustomerId = parameters.Get<int>("@CustomerId"),
+                    LoginId = parameters.Get<int>("@LoginId"),
+                    AccountId = parameters.Get<int>("@AccountId")
+                };
+            }
 
 
         }

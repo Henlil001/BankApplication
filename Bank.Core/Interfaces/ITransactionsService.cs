@@ -4,7 +4,7 @@ namespace Bank.Core.Interfaces
 {
     public interface ITransactionsService
     {
-        List<TransactionsDTO> ShowTransactions(int accountId);
+       Task<List<TransactionsDTO>> ShowTransactionsAsync(int accountId);
         bool TransferMoney(TransactionsInput transactions);
     }
 }

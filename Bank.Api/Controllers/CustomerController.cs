@@ -16,12 +16,6 @@ namespace Bank.Api.Controllers
             _customerService = customerService;
         }
 
-        [HttpGet]
-        public IActionResult GetAllCustomer()
-        {
-            return Ok(_customerService.GetAllCustomers());
-        }
-
         [Route("Admin_Create_New_Customer")]
         [HttpPost]
         [Authorize(Roles = "Admin")]
@@ -29,7 +23,7 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                var (newCustomer, check) = _customerService.CreateCostumerAsync(createNewCustomer).Result;
+                var (newCustomer, check) = _customerService.CreateCostumer(createNewCustomer).Result;
 
                 if (check)
                     return Ok(newCustomer);

@@ -16,9 +16,9 @@ namespace Bank.Core.Service
             _mapper = mapper;
             _accountsRepo = accountsRepo;
         }
-        public List<TransactionsDTO> ShowTransactions(int accountId)
+        public async Task<List<TransactionsDTO>> ShowTransactionsAsync(int accountId)
         {
-            var transactions = _transactionsRepo.ShowTransactionsAsync(accountId).Result;
+            var transactions = await _transactionsRepo.ShowTransactionsAsync(accountId);
 
             var transactionsDTO = new List<TransactionsDTO>();
 

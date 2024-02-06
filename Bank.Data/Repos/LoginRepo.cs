@@ -14,41 +14,24 @@ namespace Bank.Data.Repos
         {
             _DBContext = dBContext;
         }
-        public Login? GetLogin(string username, string password)
+
+        public async Task<Login?> CheckUsernameAsync(string username)
         {
+
             using (IDbConnection db = _DBContext.GetConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@UserName", username);
-                parameters.Add("@Password", password);
 
-                var login = db.Query<Login, Customer, Login>("CheckLogin", (login, customer) =>
-                {
-                    login.Customer = customer;
-                    return login;
-                }, param: parameters, splitOn: "CustomerId", commandType: CommandType.StoredProcedure).SingleOrDefault();
-                return login;
+                var login = await db.QueryAsync<Login, Customer, Login>("CheckUserName",
+                    (login, customer) =>
+                    {
+                        login.Customer = customer;
+                        return login;
+                    }, param: parameters, splitOn: "CustomerId", commandType: CommandType.StoredProcedure);
+                return login.SingleOrDefault();
             }
-        }
 
-        public async Task<Login?> CheckUsernameAsync(string username)
-        {
-            return await Task.Run(() =>
-            {
-                using (IDbConnection db = _DBContext.GetConnection())
-                {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@UserName", username);
-
-                    var login = db.Query<Login, Customer, Login>("CheckUserName",
-                        (login, customer) =>
-                        {
-                            login.Customer = customer;
-                            return login;
-                        }, param: parameters, splitOn: "CustomerId", commandType: CommandType.StoredProcedure).SingleOrDefault();
-                    return login;
-                }
-            });
         }
         public NewCustomerDTO CreateLoginToExictingCustomer(Login login)
         {
@@ -62,13 +45,10 @@ namespace Bank.Data.Repos
                 parameters.Add("@Surname", login.Customer.SurName);
                 parameters.Add("@StreetAddress", login.Customer.StreetAddress);
                 parameters.Add("@Birthday", login.Customer.Birthday);
-
                 parameters.Add("@CustomerId", dbType: DbType.Int32, direction: ParameterDirection.Output);
                 parameters.Add("@LoginId", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 db.Execute("CreateLoginToExistingCustomer", parameters, commandType: CommandType.StoredProcedure);
-
-                // Hämta utmatningsvärdena
 
                 // Skapa och returnera en NewCustomer med de erhållna värdena
                 return new NewCustomerDTO

@@ -21,7 +21,7 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                return Ok(_transactionsService.ShowTransactions(accountId));
+                return Ok(_transactionsService.ShowTransactionsAsync(accountId).Result); ;
             }
             catch (Exception)
             {

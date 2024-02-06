@@ -59,29 +59,31 @@ namespace Bank.Core.Service
             return token;
 
         }
-        public (NewCustomerDTO, bool) CreateLoginToExictingCustomer(Login login)
+        public async Task<(NewCustomerDTO, bool)> CreateLoginToExictingCustomer(Login login)
         {
             var newLogin = new NewCustomerDTO();
             if (login.UserName is null || login.Password.Length < 5 || login.Customer is null)
                 return (newLogin, false);
 
-            var check = _loginRepo.CheckUsernameAsync(login.UserName);
+            var check = await _loginRepo.CheckUsernameAsync(login.UserName);
 
             if (check != null)
                 return (newLogin, false);
 
-            var checkCustomerInput = _customerRepo.GetAllCustomers().Where(c => c.GivenName == login.Customer.GivenName &&
-                                                                           c.SurName == login.Customer.SurName &&
-                                                                           c.StreetAddress == login.Customer.StreetAddress &&
-                                                                           c.Birthday == login.Customer.Birthday);
-            if (checkCustomerInput is null)
+            var allCustomer = await _customerRepo.GetAllCustomersAsync();
+
+            var checkCustomerInput = allCustomer.Where(c => c.GivenName == login.Customer.GivenName &&
+                                                           c.SurName == login.Customer.SurName &&
+                                                           c.StreetAddress == login.Customer.StreetAddress &&
+                                                           c.Birthday == login.Customer.Birthday).Any();
+            if (!checkCustomerInput)
                 return (newLogin, false);
 
             login.Password = BCrypt.Net.BCrypt.HashPassword(login.Password);
             login.Role = "Customer";
 
             newLogin = _loginRepo.CreateLoginToExictingCustomer(login);
-            
+
             return (newLogin, true);
         }
 

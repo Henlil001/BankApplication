@@ -7,7 +7,8 @@ namespace Bank.Core.Interfaces
     {
         Task<string> LoginAsync(string username, string password);
 
-        (NewCustomerDTO, bool) CreateLoginToExictingCustomer(Login login);
+        Task<(NewCustomerDTO, bool)> CreateLoginToExictingCustomer(Login login);
+
 
     }
 }

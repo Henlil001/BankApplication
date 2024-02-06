@@ -5,7 +5,6 @@ namespace Bank.Data.Interfaces
 {
     public interface ILoginRepo
     {
-        Login? GetLogin(string username, string password);
         Task<Login?> CheckUsernameAsync(string username);
         NewCustomerDTO CreateLoginToExictingCustomer(Login login);
     }

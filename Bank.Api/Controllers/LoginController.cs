@@ -44,7 +44,7 @@ namespace Bank.Api.Controllers
         {
             try
             {
-                var tuple = _Service.CreateLoginToExictingCustomer(login);
+                var tuple = _Service.CreateLoginToExictingCustomer(login).Result;
                 var newLogin = tuple.Item1;
                 var check = tuple.Item2;
 

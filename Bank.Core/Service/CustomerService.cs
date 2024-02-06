@@ -17,7 +17,7 @@ namespace Bank.Core.Service
         }
 
 
-        public async Task<(NewCustomerDTO, bool)> CreateCostumerAsync(CreateNewCustomerInput createNewCustomer)
+        public async Task<(NewCustomerDTO, bool)> CreateCostumer(CreateNewCustomerInput createNewCustomer)
         {
 
             var newCustomer = new NewCustomerDTO();
@@ -38,7 +38,7 @@ namespace Bank.Core.Service
 
             createNewCustomer.Password = BCrypt.Net.BCrypt.HashPassword(createNewCustomer.Password);
 
-            newCustomer = await _customerRepo.CreateCustomerAsync(createNewCustomer);
+            newCustomer = _customerRepo.CreateCustomer(createNewCustomer);
 
             if (newCustomer.CustomerId.ToString().Length == 0 || newCustomer.AccountId.ToString().Length == 0 || newCustomer.LoginId.ToString().Length == 0)
                 return (newCustomer, false);
@@ -47,12 +47,6 @@ namespace Bank.Core.Service
             return (newCustomer, true);
         }
 
-        public List<Customer> GetAllCustomers()
-        {
-            return _customerRepo.GetAllCustomers();
-        }
-
-
-
+        
     }
 }
