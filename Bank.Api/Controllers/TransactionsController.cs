@@ -29,7 +29,7 @@ namespace Bank.Api.Controllers
                 var check = tuple.Item2;
 
                 if (check is false)
-                    return Unauthorized("You can only se your accounts transactions.");
+                    return Unauthorized("You can only see your accounts transactions.");
 
                 return Ok(transactionsDTO);
             }
