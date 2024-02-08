@@ -13,12 +13,12 @@ namespace Bank.Data.Repos
         {
             _dbContext = dBContext;
         }
-        public async Task <List<Customer>> GetAllCustomersAsync()
+        public async Task<List<Customer>> GetAllCustomersAsync()
         {
             using (IDbConnection db = _dbContext.GetConnection())
             {
-                string sql = "select * from Customers";
-                var allCustomers = await db.QueryAsync<Customer>(sql);
+                var allCustomers = await db.QueryAsync<Customer>("GetAllCustomers", commandType: CommandType.StoredProcedure);
+
                 return allCustomers.ToList();
             }
         }
