@@ -49,7 +49,7 @@ namespace Bank.Api.Controllers
                 var check = tuple.Item2;
 
                 if (check == false)
-                    return BadRequest("Invalied Username and Password need to be atleast 6 char long");
+                    return BadRequest("Invalied Username/Password need to be atleast 6 char long/Customer not found");
 
                 return Ok(newLogin);
             }

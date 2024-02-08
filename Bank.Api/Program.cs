@@ -78,6 +78,8 @@ builder.Services.AddScoped<IAccountsService, AccountsService>();
 builder.Services.AddScoped<IAccountsRepo, AccountsRepo>();
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
 builder.Services.AddScoped<ITransactionsRepo, TransactionsRepo>();
+builder.Services.AddScoped<IDispositionsRepo, DispositionsRepo>();
+
 
 builder.Services.AddSingleton<IBankDBContext, BankDBContext>();
 
